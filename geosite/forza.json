@@ -1,0 +1,16 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "forza.net",
+        "forzamotorsport.net",
+        "forzaracingchampionship.com",
+        "forzarc.com"
+      ],
+      "domain": [
+        "prodforza.blob.core.windows.net"
+      ]
+    }
+  ]
+}

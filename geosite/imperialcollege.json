@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "imperialbusiness.school",
+        "ic.ac.uk",
+        "imperial.ac.uk"
+      ],
+      "domain": [
+        "imperial.insendi.com"
+      ]
+    }
+  ]
+}
