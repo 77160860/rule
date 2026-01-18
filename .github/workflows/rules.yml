@@ -94,45 +94,56 @@ jobs:
               else:
                   rule_name = filename.replace(".txt", "")
               
-              # 读取原始行
               with open(category_path, 'r', encoding='utf-8') as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
-              # --- A. 生成 Mihomo (YAML + MRS) ---
-              mihomo_lines = []
+              # --- 准备 Clash/Mihomo 格式的数据 ---
+              clash_lines = []
               
               if type_name == "geosite":
-                  # 对 Geosite 进行格式转换：添加 DOMAIN-SUFFIX 等前缀
+                  # 转换 Geosite 格式
                   for line in raw_lines:
                       if line.startswith("full:"):
-                          mihomo_lines.append(f"DOMAIN,{line[5:]}")
+                          clash_lines.append(f"DOMAIN,{line[5:]}")
                       elif line.startswith("regexp:"):
-                          mihomo_lines.append(f"DOMAIN-REGEX,{line[7:]}")
+                          clash_lines.append(f"DOMAIN-REGEX,{line[7:]}")
                       elif line.startswith("keyword:"):
-                          mihomo_lines.append(f"DOMAIN-KEYWORD,{line[8:]}")
+                          clash_lines.append(f"DOMAIN-KEYWORD,{line[8:]}")
                       elif line.startswith("domain:"):
-                          mihomo_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
+                          clash_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
                       else:
-                          # 默认情况是域名后缀
-                          mihomo_lines.append(f"DOMAIN-SUFFIX,{line}")
+                          clash_lines.append(f"DOMAIN-SUFFIX,{line}")
               else:
                   # GeoIP 保持原样 (CIDR)
-                  mihomo_lines = raw_lines
+                  clash_lines = raw_lines
 
-              mihomo_yaml = {"payload": mihomo_lines}
-              yaml_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.yaml"
-              mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
+              # --- A. 生成 .list 文件 (纯文本) ---
+              list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
+              with open(list_path, 'w', encoding='utf-8') as f:
+                  for line in clash_lines:
+                      f.write(line + '\n')
+
+              # --- B. 生成 .mrs 文件 (需要临时 YAML) ---
+              # 创建临时 YAML 仅用于编译
+              temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
+              mihomo_yaml = {"payload": clash_lines}
               
-              with open(yaml_path, 'w', encoding='utf-8') as f:
+              with open(temp_yaml_path, 'w', encoding='utf-8') as f:
                   yaml.dump(mihomo_yaml, f, default_flow_style=False)
               
+              mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
+              
               try:
-                  run_command(f"mihomo convert-ruleset {mihomo_type} yaml {yaml_path} {mrs_path}")
+                  run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
               except subprocess.CalledProcessError:
                   print(f"Failed to compile MRS for {rule_name}")
+              
+              # 删除临时 YAML
+              if os.path.exists(temp_yaml_path):
+                  os.remove(temp_yaml_path)
 
-              # --- B. 生成 Sing-box (JSON + SRS) ---
+              # --- C. 生成 Sing-box (JSON + SRS) ---
               sb_rules = []
               
               if type_name == "geoip":
@@ -143,7 +154,6 @@ jobs:
                   domain_regex = []
                   domain_keyword = []
                   
-                  # Sing-box 需要拆分处理，使用原始 raw_lines
                   for line in raw_lines:
                       if line.startswith("full:"):
                           domain_full.append(line[5:])
