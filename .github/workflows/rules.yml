@@ -64,7 +64,13 @@ jobs:
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
           
-          # 确保输出目录存在
+          # --- 清理旧目录 (确保提交时删除已不存在的规则) ---
+          if os.path.exists(f"{OUTPUT_DIR}/geoip"):
+              shutil.rmtree(f"{OUTPUT_DIR}/geoip")
+          if os.path.exists(f"{OUTPUT_DIR}/geosite"):
+              shutil.rmtree(f"{OUTPUT_DIR}/geosite")
+          
+          # 创建新目录
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
           
@@ -101,7 +107,6 @@ jobs:
               clash_lines = []
               
               if type_name == "geosite":
-                  # 转换 Geosite 格式
                   for line in raw_lines:
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
@@ -114,7 +119,6 @@ jobs:
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
               else:
-                  # GeoIP 保持原样 (CIDR)
                   clash_lines = raw_lines
 
               # --- A. 生成 .list 文件 (纯文本) ---
@@ -124,7 +128,6 @@ jobs:
                       f.write(line + '\n')
 
               # --- B. 生成 .mrs 文件 (需要临时 YAML) ---
-              # 创建临时 YAML 仅用于编译
               temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
               mihomo_yaml = {"payload": clash_lines}
               
@@ -139,7 +142,6 @@ jobs:
               except subprocess.CalledProcessError:
                   print(f"Failed to compile MRS for {rule_name}")
               
-              # 删除临时 YAML
               if os.path.exists(temp_yaml_path):
                   os.remove(temp_yaml_path)
 
@@ -202,18 +204,18 @@ jobs:
           
           print("Done!")
 
-      - name: Prepare Publish Directory
+      - name: Commit and Push to Main
         run: |
-          mkdir -p publish
-          mv geoip publish/
-          mv geosite publish/
-
-      - name: Deploy to rule-set branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish
-          publish_branch: rule-set
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Update rulesets: ${{ github.sha }}'
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 添加所有变更（包括删除的文件）
+          git add geoip geosite
+          
+          # 检查是否有变更需要提交
+          if ! git diff --cached --quiet; then
+            git commit -m "Update rulesets: $(date +'%Y-%m-%d %H:%M:%S')"
+            git push origin HEAD:${{ github.ref }}
+          else
+            echo "No changes detected, skipping commit."
+          fi
