@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          # cache: 'pip' # 已禁用缓存以避免报错
+          # cache: 'pip' # 禁用缓存
 
       - name: Install Python Dependencies
         run: pip install PyYAML
@@ -62,14 +62,20 @@ jobs:
           OUTPUT_DIR = "rule-set"
           TEMP_DIR = "temp_extract"
           
+          # 清理并创建输出目录
           if os.path.exists(OUTPUT_DIR):
               shutil.rmtree(OUTPUT_DIR)
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
           
+          # 清理并创建临时目录
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
           os.makedirs(TEMP_DIR, exist_ok=True)
+          
+          # --- 修复点：显式创建 v2dat 需要的子目录 ---
+          os.makedirs(f"{TEMP_DIR}/geoip", exist_ok=True)
+          os.makedirs(f"{TEMP_DIR}/geosite", exist_ok=True)
 
           def run_command(cmd):
               subprocess.run(cmd, shell=True, check=True)
@@ -77,7 +83,6 @@ jobs:
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
 
-          # --- 修复点：添加了 geoip 和 geosite 子命令 ---
           print("Unpacking geoip.dat...")
           run_command(f"{v2dat_path} unpack geoip geoip.dat -o {TEMP_DIR}/geoip")
           
@@ -86,7 +91,12 @@ jobs:
 
           def process_category(category_path, type_name, output_subdir):
               filename = os.path.basename(category_path)
-              rule_name = filename
+              # v2dat 解压出来的文件名可能是 'geoip_cn.txt' 或 'geosite_google.txt'
+              # 我们需要清理文件名，只保留标签名（如 'cn', 'google'）
+              if filename.startswith(type_name + "_"):
+                  rule_name = filename.replace(type_name + "_", "").replace(".txt", "")
+              else:
+                  rule_name = filename.replace(".txt", "")
               
               with open(category_path, 'r', encoding='utf-8') as f:
                   lines = [line.strip() for line in f if line.strip()]
