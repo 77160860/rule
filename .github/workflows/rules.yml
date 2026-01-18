@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          # cache: 'pip' # 删除这一行以解决报错
+          # cache: 'pip' # 已禁用缓存以避免报错
 
       - name: Install Python Dependencies
         run: pip install PyYAML
@@ -77,11 +77,12 @@ jobs:
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
 
+          # --- 修复点：添加了 geoip 和 geosite 子命令 ---
           print("Unpacking geoip.dat...")
-          run_command(f"{v2dat_path} unpack geoip.dat -o {TEMP_DIR}/geoip")
+          run_command(f"{v2dat_path} unpack geoip geoip.dat -o {TEMP_DIR}/geoip")
           
           print("Unpacking geosite.dat...")
-          run_command(f"{v2dat_path} unpack geosite.dat -o {TEMP_DIR}/geosite")
+          run_command(f"{v2dat_path} unpack geosite geosite.dat -o {TEMP_DIR}/geosite")
 
           def process_category(category_path, type_name, output_subdir):
               filename = os.path.basename(category_path)
