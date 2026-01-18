@@ -24,6 +24,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'pip' # 开启缓存以加快速度
+
+      - name: Install Python Dependencies
+        run: pip install PyYAML
 
       - name: Install Tools
         run: |
@@ -76,11 +80,16 @@ jobs:
               subprocess.run(cmd, shell=True, check=True)
 
           # 1. 解压 DAT 文件
+          # 注意：v2dat 安装在 GOPATH/bin 下，需要找到正确路径
+          # 这里直接使用 go env GOPATH 获取路径
+          go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
+          v2dat_path = os.path.join(go_path, "bin", "v2dat")
+
           print("Unpacking geoip.dat...")
-          run_command(f"$(go env GOPATH)/bin/v2dat unpack geoip.dat -o {TEMP_DIR}/geoip")
+          run_command(f"{v2dat_path} unpack geoip.dat -o {TEMP_DIR}/geoip")
           
           print("Unpacking geosite.dat...")
-          run_command(f"$(go env GOPATH)/bin/v2dat unpack geosite.dat -o {TEMP_DIR}/geosite")
+          run_command(f"{v2dat_path} unpack geosite.dat -o {TEMP_DIR}/geosite")
 
           # 2. 处理函数
           def process_category(category_path, type_name, output_subdir):
@@ -91,7 +100,6 @@ jobs:
                   lines = [line.strip() for line in f if line.strip()]
 
               # --- A. 生成 Mihomo (YAML + MRS) ---
-              # Mihomo YAML 格式非常简单，只有 payload
               mihomo_yaml = {"payload": lines}
               yaml_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.yaml"
               mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
@@ -100,8 +108,6 @@ jobs:
                   yaml.dump(mihomo_yaml, f, default_flow_style=False)
               
               # 编译 MRS
-              # 命令格式: mihomo convert-ruleset <type> <yaml_path> <mrs_path>
-              # type: domain (for geosite) or ipcidr (for geoip)
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
               try:
                   run_command(f"mihomo convert-ruleset {mihomo_type} {yaml_path} {mrs_path}")
@@ -109,14 +115,11 @@ jobs:
                   print(f"Failed to compile MRS for {rule_name}")
 
               # --- B. 生成 Sing-box (JSON + SRS) ---
-              # Sing-box JSON 需要区分规则类型
               sb_rules = []
               
               if type_name == "geoip":
-                  # GeoIP 全是 IP CIDR
                   sb_rules.append({"ip_cidr": lines})
               else:
-                  # GeoSite 需要解析前缀 (full:, regexp:, domain:)
                   domain_suffix = []
                   domain_full = []
                   domain_regex = []
@@ -127,12 +130,12 @@ jobs:
                           domain_full.append(line[5:])
                       elif line.startswith("regexp:"):
                           domain_regex.append(line[7:])
-                      elif line.startswith("domain:"): # v2dat 可能会保留这个前缀
+                      elif line.startswith("domain:"):
                           domain_suffix.append(line[7:])
                       elif line.startswith("keyword:"):
                           domain_keyword.append(line[8:])
                       else:
-                          domain_suffix.append(line) # 默认为 suffix
+                          domain_suffix.append(line)
                   
                   rule_item = {}
                   if domain_suffix: rule_item["domain_suffix"] = domain_suffix
@@ -168,7 +171,6 @@ jobs:
           print("Processing GeoSite files...")
           geosite_files = os.listdir(f"{TEMP_DIR}/geosite")
           for f in geosite_files:
-              # 过滤掉一些奇怪的文件名或空文件
               process_category(f"{TEMP_DIR}/geosite/{f}", "geosite", "geosite")
           
           print("Done!")
