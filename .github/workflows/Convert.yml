@@ -2,7 +2,7 @@ name: Geox to SRS/MRS
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '56 15 * * *'
   workflow_dispatch:
 
 jobs:
