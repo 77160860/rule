@@ -2,8 +2,8 @@ name: Convert V2Ray Rules to SRS/MRS
 
 on:
   schedule:
-    - cron: '0 2 * * *' # 每天 UTC 2:00 (北京时间 10:00) 运行
-  workflow_dispatch: # 允许手动触发
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,24 +24,21 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip' # 开启缓存以加快速度
+          # cache: 'pip' # 删除这一行以解决报错
 
       - name: Install Python Dependencies
         run: pip install PyYAML
 
       - name: Install Tools
         run: |
-          # 1. 安装 v2dat (用于解压 dat)
           go install github.com/urlesistiana/v2dat@latest
           
-          # 2. 安装 Sing-box (用于编译 srs)
           SB_VERSION=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r .tag_name | sed 's/v//')
           wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SB_VERSION}/sing-box-${SB_VERSION}-linux-amd64.tar.gz"
           tar -xvf sing-box.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
           chmod +x /usr/local/bin/sing-box
           
-          # 3. 安装 Mihomo (用于编译 mrs)
           MIHOMO_VERSION=$(curl -s "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" | jq -r .tag_name)
           wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_VERSION}/mihomo-linux-amd64-${MIHOMO_VERSION}.gz"
           gunzip mihomo.gz
@@ -62,11 +59,9 @@ jobs:
           import yaml
           import shutil
 
-          # 配置
           OUTPUT_DIR = "rule-set"
           TEMP_DIR = "temp_extract"
           
-          # 确保目录存在
           if os.path.exists(OUTPUT_DIR):
               shutil.rmtree(OUTPUT_DIR)
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
@@ -79,9 +74,6 @@ jobs:
           def run_command(cmd):
               subprocess.run(cmd, shell=True, check=True)
 
-          # 1. 解压 DAT 文件
-          # 注意：v2dat 安装在 GOPATH/bin 下，需要找到正确路径
-          # 这里直接使用 go env GOPATH 获取路径
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
 
@@ -91,10 +83,9 @@ jobs:
           print("Unpacking geosite.dat...")
           run_command(f"{v2dat_path} unpack geosite.dat -o {TEMP_DIR}/geosite")
 
-          # 2. 处理函数
           def process_category(category_path, type_name, output_subdir):
               filename = os.path.basename(category_path)
-              rule_name = filename  # e.g., 'google' or 'cn'
+              rule_name = filename
               
               with open(category_path, 'r', encoding='utf-8') as f:
                   lines = [line.strip() for line in f if line.strip()]
@@ -107,7 +98,6 @@ jobs:
               with open(yaml_path, 'w', encoding='utf-8') as f:
                   yaml.dump(mihomo_yaml, f, default_flow_style=False)
               
-              # 编译 MRS
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
               try:
                   run_command(f"mihomo convert-ruleset {mihomo_type} {yaml_path} {mrs_path}")
@@ -156,13 +146,11 @@ jobs:
               with open(json_path, 'w', encoding='utf-8') as f:
                   json.dump(sb_json, f, indent=2)
               
-              # 编译 SRS
               try:
                   run_command(f"sing-box rule-set compile --output {srs_path} {json_path}")
               except subprocess.CalledProcessError:
                   print(f"Failed to compile SRS for {rule_name}")
 
-          # 3. 执行循环
           print("Processing GeoIP files...")
           geoip_files = os.listdir(f"{TEMP_DIR}/geoip")
           for f in geoip_files:
