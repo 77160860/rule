@@ -1,8 +1,8 @@
-name: Convert V2Ray Rules to SRS/MRS
+name: geox to SRS/MRS
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
@@ -24,7 +24,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          # cache: 'pip' # 禁用缓存
 
       - name: Install Python Dependencies
         run: pip install PyYAML
@@ -33,14 +32,12 @@ jobs:
         run: |
           go install github.com/urlesistiana/v2dat@latest
           
-          # 安装 Sing-box
           SB_VERSION=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r .tag_name | sed 's/v//')
           wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SB_VERSION}/sing-box-${SB_VERSION}-linux-amd64.tar.gz"
           tar -xvf sing-box.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
           chmod +x /usr/local/bin/sing-box
           
-          # 安装 Mihomo
           MIHOMO_VERSION=$(curl -s "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" | jq -r .tag_name)
           wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_VERSION}/mihomo-linux-amd64-${MIHOMO_VERSION}.gz"
           gunzip mihomo.gz
@@ -64,17 +61,14 @@ jobs:
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
           
-          # --- 清理旧目录 (确保提交时删除已不存在的规则) ---
           if os.path.exists(f"{OUTPUT_DIR}/geoip"):
               shutil.rmtree(f"{OUTPUT_DIR}/geoip")
           if os.path.exists(f"{OUTPUT_DIR}/geosite"):
               shutil.rmtree(f"{OUTPUT_DIR}/geosite")
           
-          # 创建新目录
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
           
-          # 清理并创建临时目录
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
           os.makedirs(TEMP_DIR, exist_ok=True)
@@ -103,7 +97,6 @@ jobs:
               with open(category_path, 'r', encoding='utf-8') as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
-              # --- 准备 Clash/Mihomo 格式的数据 ---
               clash_lines = []
               
               if type_name == "geosite":
@@ -121,13 +114,11 @@ jobs:
               else:
                   clash_lines = raw_lines
 
-              # --- A. 生成 .list 文件 (纯文本) ---
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
               with open(list_path, 'w', encoding='utf-8') as f:
                   for line in clash_lines:
                       f.write(line + '\n')
 
-              # --- B. 生成 .mrs 文件 (需要临时 YAML) ---
               temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
               mihomo_yaml = {"payload": clash_lines}
               
@@ -145,7 +136,6 @@ jobs:
               if os.path.exists(temp_yaml_path):
                   os.remove(temp_yaml_path)
 
-              # --- C. 生成 Sing-box (JSON + SRS) ---
               sb_rules = []
               
               if type_name == "geoip":
@@ -209,10 +199,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 添加所有变更（包括删除的文件）
           git add geoip geosite
           
-          # 检查是否有变更需要提交
           if ! git diff --cached --quiet; then
             git commit -m "Update rulesets: $(date +'%Y-%m-%d %H:%M:%S')"
             git push origin HEAD:${{ github.ref }}
