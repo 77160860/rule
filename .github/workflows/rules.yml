@@ -33,12 +33,14 @@ jobs:
         run: |
           go install github.com/urlesistiana/v2dat@latest
           
+          # 安装 Sing-box
           SB_VERSION=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r .tag_name | sed 's/v//')
           wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SB_VERSION}/sing-box-${SB_VERSION}-linux-amd64.tar.gz"
           tar -xvf sing-box.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
           chmod +x /usr/local/bin/sing-box
           
+          # 安装 Mihomo
           MIHOMO_VERSION=$(curl -s "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" | jq -r .tag_name)
           wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_VERSION}/mihomo-linux-amd64-${MIHOMO_VERSION}.gz"
           gunzip mihomo.gz
@@ -59,12 +61,11 @@ jobs:
           import yaml
           import shutil
 
-          OUTPUT_DIR = "rule-set"
+          # --- 修改点1：输出目录设为当前目录 "." ---
+          OUTPUT_DIR = "." 
           TEMP_DIR = "temp_extract"
           
-          # 清理并创建输出目录
-          if os.path.exists(OUTPUT_DIR):
-              shutil.rmtree(OUTPUT_DIR)
+          # 确保输出目录存在 (在当前目录下创建 geoip 和 geosite)
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
           
@@ -72,8 +73,6 @@ jobs:
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
           os.makedirs(TEMP_DIR, exist_ok=True)
-          
-          # --- 修复点：显式创建 v2dat 需要的子目录 ---
           os.makedirs(f"{TEMP_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{TEMP_DIR}/geosite", exist_ok=True)
 
@@ -91,8 +90,6 @@ jobs:
 
           def process_category(category_path, type_name, output_subdir):
               filename = os.path.basename(category_path)
-              # v2dat 解压出来的文件名可能是 'geoip_cn.txt' 或 'geosite_google.txt'
-              # 我们需要清理文件名，只保留标签名（如 'cn', 'google'）
               if filename.startswith(type_name + "_"):
                   rule_name = filename.replace(type_name + "_", "").replace(".txt", "")
               else:
@@ -111,7 +108,8 @@ jobs:
               
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
               try:
-                  run_command(f"mihomo convert-ruleset {mihomo_type} {yaml_path} {mrs_path}")
+                  # mihomo 编译命令
+                  run_command(f"mihomo convert-ruleset {mihomo_type} yaml {yaml_path} {mrs_path}")
               except subprocess.CalledProcessError:
                   print(f"Failed to compile MRS for {rule_name}")
 
@@ -147,8 +145,9 @@ jobs:
                   if rule_item:
                       sb_rules.append(rule_item)
 
+              # --- 修改点2：Sing-box JSON 版本指定为 3 ---
               sb_json = {
-                  "version": 1,
+                  "version": 3,
                   "rules": sb_rules
               }
               json_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.json"
@@ -174,11 +173,17 @@ jobs:
           
           print("Done!")
 
+      - name: Prepare Publish Directory
+        run: |
+          mkdir -p publish
+          mv geoip publish/
+          mv geosite publish/
+
       - name: Deploy to rule-set branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./rule-set
+          publish_dir: ./publish
           publish_branch: rule-set
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
