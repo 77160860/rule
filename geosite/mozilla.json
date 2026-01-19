@@ -3,10 +3,10 @@
   "rules": [
     {
       "domain_suffix": [
-        "firefox.com",
-        "mozilla.community",
-        "firefoxusercontent.com",
         "mdn.dev",
+        "mozilla.community",
+        "mdnplay.dev",
+        "mdnyalp.dev",
         "mozilla.org",
         "extensionworkshop.com",
         "bugzilla.org",
@@ -14,16 +14,16 @@
         "seamonkey-project.org",
         "thunderbird.net",
         "mozgcp.net",
-        "crates.io",
-        "docs.rs",
+        "firefox.com",
+        "firefoxusercontent.com",
         "mozilla.com",
         "mozilla.net",
-        "mdnplay.dev",
-        "mdnyalp.dev",
+        "docs.rs",
+        "crates.io",
         "rustup.rs",
         "rust-lang.org",
-        "mdn.allizom.net",
         "mdn.mozit.cloud",
+        "mdn.allizom.net",
         "developer.allizom.org"
       ],
       "domain": [
