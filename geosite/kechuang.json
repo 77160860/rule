@@ -3,10 +3,8 @@
   "rules": [
     {
       "domain_suffix": [
-        "kechuang.org"
-      ],
-      "domain": [
-        "kc.kexinshe.com"
+        "kechuang.org",
+        "kexinshe.com"
       ]
     }
   ]

@@ -3,7 +3,8 @@
   "rules": [
     {
       "domain_suffix": [
-        "static.sensorsdata.cn"
+        "liveperson.net",
+        "lpsnmedia.net"
       ]
     }
   ]
