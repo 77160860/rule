@@ -624,8 +624,8 @@ DOMAIN-SUFFIX,cn
 DOMAIN-SUFFIX,citic
 DOMAIN-SUFFIX,baidu
 DOMAIN-SUFFIX,alipay
-DOMAIN-SUFFIX,juyouqu.com
-DOMAIN-SUFFIX,59rj.com
+DOMAIN-SUFFIX,juyoukuaisong.net
+DOMAIN-SUFFIX,77dd23.com
 DOMAIN-SUFFIX,00615.net
 DOMAIN-SUFFIX,0066.com
 DOMAIN-SUFFIX,007.pub
@@ -6700,7 +6700,7 @@ DOMAIN-SUFFIX,59jt.com
 DOMAIN-SUFFIX,59med.com
 DOMAIN-SUFFIX,59ni.com
 DOMAIN-SUFFIX,59pk.net
-DOMAIN-SUFFIX,juzikong.com
+DOMAIN-SUFFIX,59rj.com
 DOMAIN-SUFFIX,59store.com
 DOMAIN-SUFFIX,59w.net
 DOMAIN-SUFFIX,59wanmei.com
@@ -7722,7 +7722,7 @@ DOMAIN-SUFFIX,77ad.cc
 DOMAIN-SUFFIX,77bh.com
 DOMAIN-SUFFIX,77bike.com
 DOMAIN-SUFFIX,77bx.com
-DOMAIN-SUFFIX,77dd23.com
+DOMAIN-SUFFIX,juzijiudian.com
 DOMAIN-SUFFIX,77de.com
 DOMAIN-SUFFIX,77dushu.com
 DOMAIN-SUFFIX,77dyy.net
@@ -13871,6 +13871,7 @@ DOMAIN-SUFFIX,baimatech.com
 DOMAIN-SUFFIX,baimda.com
 DOMAIN-SUFFIX,baimei.com
 DOMAIN-SUFFIX,baimeidashu.com
+DOMAIN-SUFFIX,baimiao.tech
 DOMAIN-SUFFIX,baimiaoapp.com
 DOMAIN-SUFFIX,baimin.com
 DOMAIN-SUFFIX,baina.com
@@ -16738,7 +16739,7 @@ DOMAIN-SUFFIX,blibao.com
 DOMAIN-SUFFIX,blibee.com
 DOMAIN-SUFFIX,blibee.net
 DOMAIN-SUFFIX,blicube.com
-DOMAIN-SUFFIX,blimage.com
+DOMAIN-SUFFIX,juzifenqi.com
 DOMAIN-SUFFIX,bliner.me
 DOMAIN-SUFFIX,bling.link
 DOMAIN-SUFFIX,blingabc.com
@@ -57354,8 +57355,8 @@ DOMAIN-SUFFIX,juyingele.com
 DOMAIN-SUFFIX,juyingonline.com
 DOMAIN-SUFFIX,juyisuliao.com
 DOMAIN-SUFFIX,juyoubao.com
-DOMAIN-SUFFIX,juyoukuaisong.net
 DOMAIN-SUFFIX,0.zone
+DOMAIN-SUFFIX,juyouqu.com
 DOMAIN-SUFFIX,juyoutang.com
 DOMAIN-SUFFIX,juyoutv.cc
 DOMAIN-SUFFIX,juyouxi.com
@@ -57375,10 +57376,10 @@ DOMAIN-SUFFIX,juzhiyuan.com
 DOMAIN-SUFFIX,juzhongjoy.com
 DOMAIN-SUFFIX,juzicon.com
 DOMAIN-SUFFIX,juzicy.com
-DOMAIN-SUFFIX,juzifenqi.com
-DOMAIN-SUFFIX,zygx8.com
+DOMAIN-SUFFIX,blimage.com
 DOMAIN-SUFFIX,0058.com
-DOMAIN-SUFFIX,shxmbzcl.com
+DOMAIN-SUFFIX,novelfmstatic.com
+DOMAIN-SUFFIX,juzilicai.com
 DOMAIN-SUFFIX,juzilm.com
 DOMAIN-SUFFIX,juzimi.cc
 DOMAIN-SUFFIX,juzioo.com
@@ -71352,7 +71353,7 @@ DOMAIN-SUFFIX,novel-supertv.com
 DOMAIN-SUFFIX,novelbio.com
 DOMAIN-SUFFIX,novelfm.com
 DOMAIN-SUFFIX,novelfmpic.com
-DOMAIN-SUFFIX,novelfmstatic.com
+DOMAIN-SUFFIX,juzikong.com
 DOMAIN-SUFFIX,novelfmvod.com
 DOMAIN-SUFFIX,novell.me
 DOMAIN-SUFFIX,novelquickapp.com
@@ -83052,6 +83053,7 @@ DOMAIN-SUFFIX,shinelon.com
 DOMAIN-SUFFIX,shineoptics.com
 DOMAIN-SUFFIX,shineray-motors.com
 DOMAIN-SUFFIX,shinerayad.com
+DOMAIN-SUFFIX,shinescan.tech
 DOMAIN-SUFFIX,shinetsu.shop
 DOMAIN-SUFFIX,shineu.com
 DOMAIN-SUFFIX,shineway.com
@@ -84019,7 +84021,7 @@ DOMAIN-SUFFIX,shxjkjt.com
 DOMAIN-SUFFIX,shxjycqxx.com
 DOMAIN-SUFFIX,shxkyy.com
 DOMAIN-SUFFIX,shxlpe.com
-DOMAIN-SUFFIX,juzilicai.com
+DOMAIN-SUFFIX,shxmbzcl.com
 DOMAIN-SUFFIX,shxmhjs.com
 DOMAIN-SUFFIX,shxnetwork.com
 DOMAIN-SUFFIX,shxrcw.com
@@ -113799,7 +113801,7 @@ DOMAIN-SUFFIX,zygames.com
 DOMAIN-SUFFIX,zygj.net
 DOMAIN-SUFFIX,zygjtzjt.com
 DOMAIN-SUFFIX,zygs.com
-DOMAIN-SUFFIX,juzijiudian.com
+DOMAIN-SUFFIX,zygx8.com
 DOMAIN-SUFFIX,zygxxs.com
 DOMAIN-SUFFIX,zygxy.online
 DOMAIN-SUFFIX,zyh365.com
