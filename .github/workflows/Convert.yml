@@ -274,7 +274,13 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           git ls-files geoip geosite | xargs -r git rm -f --
-          git add geoip geosite
+
+          if [ -d geoip ]; then
+            git add geoip
+          fi
+          if [ -d geosite ]; then
+            git add geosite
+          fi
 
           if ! git diff --cached --quiet; then
             git commit -m "Update rulesets: $(date +'%Y-%m-%d %H:%M:%S')"
