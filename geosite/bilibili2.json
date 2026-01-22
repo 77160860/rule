@@ -8,7 +8,7 @@
         "bili999.com"
       ],
       "domain_regex": [
-        "(^|\\.)bilibili3(0[1-9]|1[0-2])\\.xyz$"
+        "^(.+\\.)?bilibili3(0[1-9]|1[0-2])\\.xyz$"
       ]
     }
   ]
