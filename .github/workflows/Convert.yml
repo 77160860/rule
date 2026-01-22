@@ -36,14 +36,22 @@ jobs:
           # v2dat
           go install github.com/urlesistiana/v2dat@latest
 
-          # sing-box (linux-amd64) - use latest/download to avoid GitHub API + jq
-          wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/latest/download/sing-box-linux-amd64.tar.gz"
+          # sing-box (linux-amd64) - no GitHub API/jq; derive version from redirect
+          SB_LOC="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/SagerNet/sing-box/releases/latest)"
+          SB_VERSION="$(printf '%s' "$SB_LOC" | sed -n 's#.*/tag/v##p')"
+          if [ -z "$SB_VERSION" ]; then
+            echo "Failed to detect sing-box version from: $SB_LOC"
+            exit 1
+          fi
+          echo "sing-box version: $SB_VERSION"
+
+          wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SB_VERSION}/sing-box-${SB_VERSION}-linux-amd64.tar.gz"
           tar -xvf sing-box.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
           sudo chmod +x /usr/local/bin/sing-box
           sing-box version
 
-          # mihomo (linux-amd64) - use latest/download to avoid GitHub API + jq
+          # mihomo (linux-amd64) - stable latest/download asset name
           wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/latest/download/mihomo-linux-amd64.gz"
           gunzip -f mihomo.gz
           sudo mv mihomo /usr/local/bin/
@@ -68,6 +76,7 @@ jobs:
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
 
+          # Clean old outputs
           if os.path.exists(f"{OUTPUT_DIR}/geoip"):
               shutil.rmtree(f"{OUTPUT_DIR}/geoip")
           if os.path.exists(f"{OUTPUT_DIR}/geosite"):
@@ -76,24 +85,24 @@ jobs:
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
 
+          # Clean temp dir
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
-          os.makedirs(TEMP_DIR, exist_ok=True)
           os.makedirs(f"{TEMP_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{TEMP_DIR}/geosite", exist_ok=True)
 
-          def run_command(cmd):
-              # Let failures fail the job so we don't silently skip updates.
+          def run_command(cmd: str) -> None:
+              # Fail fast: if compilation fails we want the workflow to fail.
               print(f"RUN: {cmd}")
               subprocess.run(cmd, shell=True, check=True)
 
           def strip_clash_prefix(s: str) -> str:
-              # sing-box JSON fields must not include Clash prefixes like "DOMAIN-REGEX,".
+              # sing-box JSON values must be pure (no "DOMAIN-REGEX," etc).
               if "," in s:
                   head, tail = s.split(",", 1)
                   if head in {
                       "DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-REGEX", "DOMAIN-KEYWORD",
-                      "IP-CIDR", "IP-CIDR6"
+                      "IP-CIDR", "IP-CIDR6",
                   }:
                       return tail
               return s
@@ -107,7 +116,7 @@ jobs:
           print("Unpacking geosite.dat...")
           run_command(f"{v2dat_path} unpack geosite geosite.dat -o {TEMP_DIR}/geosite")
 
-          def process_category(category_path, type_name, output_subdir):
+          def process_category(category_path: str, type_name: str, output_subdir: str) -> None:
               filename = os.path.basename(category_path)
               if filename.startswith(type_name + "_"):
                   rule_name = filename.replace(type_name + "_", "").replace(".txt", "")
@@ -118,9 +127,8 @@ jobs:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
               # Build Clash/Mihomo payload (.list + .mrs)
-              clash_lines = []
-
               if type_name == "geosite":
+                  clash_lines = []
                   for line in raw_lines:
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
@@ -133,7 +141,7 @@ jobs:
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
               else:
-                  # For geoip, mihomo ipcidr expects Clash-style "IP-CIDR,<cidr>" entries.
+                  # geoip: mihomo ipcidr input is typically Clash-style IP-CIDR entries
                   clash_lines = [f"IP-CIDR,{line}" for line in raw_lines]
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
@@ -142,23 +150,18 @@ jobs:
                       f.write(line + "\n")
 
               temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
-              mihomo_yaml = {"payload": clash_lines}
-
               with open(temp_yaml_path, "w", encoding="utf-8") as f:
-                  yaml.dump(mihomo_yaml, f, default_flow_style=False)
+                  yaml.dump({"payload": clash_lines}, f, default_flow_style=False)
 
               mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
               run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
 
-              if os.path.exists(temp_yaml_path):
-                  os.remove(temp_yaml_path)
+              os.remove(temp_yaml_path)
 
               # Build sing-box rule-set JSON (.json + .srs)
-              sb_rules = []
-
               if type_name == "geoip":
-                  sb_rules.append({"ip_cidr": raw_lines})
+                  sb_rules = [{"ip_cidr": raw_lines}]
               else:
                   domain_suffix = []
                   domain_full = []
@@ -188,8 +191,7 @@ jobs:
                   if domain_keyword:
                       rule_item["domain_keyword"] = domain_keyword
 
-                  if rule_item:
-                      sb_rules.append(rule_item)
+                  sb_rules = [rule_item] if rule_item else []
 
               sb_json = {"version": 3, "rules": sb_rules}
               json_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.json"
@@ -202,13 +204,11 @@ jobs:
               print(f"OK: {type_name}/{rule_name} lines={len(raw_lines)}")
 
           print("Processing GeoIP files...")
-          geoip_files = os.listdir(f"{TEMP_DIR}/geoip")
-          for f in geoip_files:
+          for f in os.listdir(f"{TEMP_DIR}/geoip"):
               process_category(f"{TEMP_DIR}/geoip/{f}", "geoip", "geoip")
 
           print("Processing GeoSite files...")
-          geosite_files = os.listdir(f"{TEMP_DIR}/geosite")
-          for f in geosite_files:
+          for f in os.listdir(f"{TEMP_DIR}/geosite"):
               process_category(f"{TEMP_DIR}/geosite/{f}", "geosite", "geosite")
 
           print("Done!")
