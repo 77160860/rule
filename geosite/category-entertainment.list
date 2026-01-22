@@ -1652,10 +1652,10 @@ DOMAIN-REGEX,^[0-9]+vod-adaptive\.akamaized\.net$
 DOMAIN-REGEX,^epicgames-download\d\.akamaized\.net$
 DOMAIN-REGEX,^hses[1-7]?\.akamaized\.net$
 DOMAIN-REGEX,^ewcdn[0-9]+\.nowe\.com$
-DOMAIN-REGEX,(^|\.)apiproxy-device-prod-nlb-.+\.amazonaws\.com$
-DOMAIN-REGEX,(^|\.)apiproxy-website-nlb-prod-.+\.amazonaws\.com$
-DOMAIN-REGEX,(^|\.)dualstack\.apiproxy-.+\.amazonaws\.com$
-DOMAIN-REGEX,(^|\.)dualstack\.ichnaea-web-.+\.amazonaws\.com$
+DOMAIN-REGEX,^(.+\.)?apiproxy-device-prod-nlb-.+\.amazonaws\.com$
+DOMAIN-REGEX,^(.+\.)?apiproxy-website-nlb-prod-.+\.amazonaws\.com$
+DOMAIN-REGEX,^(.+\.)?dualstack\.apiproxy-.+\.amazonaws\.com$
+DOMAIN-REGEX,^(.+\.)?dualstack\.ichnaea-web-.+\.amazonaws\.com$
 DOMAIN-SUFFIX,ggpht.cn
 DOMAIN-SUFFIX,bytedapm.com
 DOMAIN-SUFFIX,byteoversea.com

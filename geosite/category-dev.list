@@ -521,7 +521,7 @@ DOMAIN-SUFFIX,developerservices2.apple.com
 DOMAIN-SUFFIX,devstreaming-cdn.apple.com
 DOMAIN-SUFFIX,visualstudio.co.uk
 DOMAIN-SUFFIX,blob.core.windows.net
-DOMAIN-REGEX,.+\.dkr\.ecr\.[^\.]+\.amazonaws\.com$
+DOMAIN-REGEX,^.+\.dkr\.ecr\.[^\.]+\.amazonaws\.com$
 DOMAIN-REGEX,^github-production-release-asset-[0-9a-zA-Z]{6}\.s3\.amazonaws\.com$
 DOMAIN-SUFFIX,cdn.jetbrains.com
 DOMAIN-SUFFIX,download-cdn.jetbrains.com.cn
