@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
+          cache: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -30,22 +31,28 @@ jobs:
 
       - name: Install Tools
         run: |
+          set -e
+
+          # v2dat
           go install github.com/urlesistiana/v2dat@latest
-          
-          SB_VERSION=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r .tag_name | sed 's/v//')
-          wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SB_VERSION}/sing-box-${SB_VERSION}-linux-amd64.tar.gz"
+
+          # sing-box (linux-amd64) - use latest/download to avoid GitHub API + jq
+          wget -O sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/latest/download/sing-box-linux-amd64.tar.gz"
           tar -xvf sing-box.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
-          chmod +x /usr/local/bin/sing-box
-          
-          MIHOMO_VERSION=$(curl -s "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" | jq -r .tag_name)
-          wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_VERSION}/mihomo-linux-amd64-${MIHOMO_VERSION}.gz"
-          gunzip mihomo.gz
+          sudo chmod +x /usr/local/bin/sing-box
+          sing-box version
+
+          # mihomo (linux-amd64) - use latest/download to avoid GitHub API + jq
+          wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/latest/download/mihomo-linux-amd64.gz"
+          gunzip -f mihomo.gz
           sudo mv mihomo /usr/local/bin/
-          chmod +x /usr/local/bin/mihomo
+          sudo chmod +x /usr/local/bin/mihomo
+          mihomo -v || true
 
       - name: Download DAT files
         run: |
+          set -e
           wget -O geoip.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
           wget -O geosite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
 
@@ -60,15 +67,15 @@ jobs:
 
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
-          
+
           if os.path.exists(f"{OUTPUT_DIR}/geoip"):
               shutil.rmtree(f"{OUTPUT_DIR}/geoip")
           if os.path.exists(f"{OUTPUT_DIR}/geosite"):
               shutil.rmtree(f"{OUTPUT_DIR}/geosite")
-          
+
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
-          
+
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
           os.makedirs(TEMP_DIR, exist_ok=True)
@@ -76,14 +83,27 @@ jobs:
           os.makedirs(f"{TEMP_DIR}/geosite", exist_ok=True)
 
           def run_command(cmd):
+              # Let failures fail the job so we don't silently skip updates.
+              print(f"RUN: {cmd}")
               subprocess.run(cmd, shell=True, check=True)
+
+          def strip_clash_prefix(s: str) -> str:
+              # sing-box JSON fields must not include Clash prefixes like "DOMAIN-REGEX,".
+              if "," in s:
+                  head, tail = s.split(",", 1)
+                  if head in {
+                      "DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-REGEX", "DOMAIN-KEYWORD",
+                      "IP-CIDR", "IP-CIDR6"
+                  }:
+                      return tail
+              return s
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
 
           print("Unpacking geoip.dat...")
           run_command(f"{v2dat_path} unpack geoip geoip.dat -o {TEMP_DIR}/geoip")
-          
+
           print("Unpacking geosite.dat...")
           run_command(f"{v2dat_path} unpack geosite geosite.dat -o {TEMP_DIR}/geosite")
 
@@ -93,12 +113,13 @@ jobs:
                   rule_name = filename.replace(type_name + "_", "").replace(".txt", "")
               else:
                   rule_name = filename.replace(".txt", "")
-              
-              with open(category_path, 'r', encoding='utf-8') as f:
+
+              with open(category_path, "r", encoding="utf-8") as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
+              # Build Clash/Mihomo payload (.list + .mrs)
               clash_lines = []
-              
+
               if type_name == "geosite":
                   for line in raw_lines:
                       if line.startswith("full:"):
@@ -112,32 +133,30 @@ jobs:
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
               else:
-                  clash_lines = raw_lines
+                  # For geoip, mihomo ipcidr expects Clash-style "IP-CIDR,<cidr>" entries.
+                  clash_lines = [f"IP-CIDR,{line}" for line in raw_lines]
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
-              with open(list_path, 'w', encoding='utf-8') as f:
+              with open(list_path, "w", encoding="utf-8") as f:
                   for line in clash_lines:
-                      f.write(line + '\n')
+                      f.write(line + "\n")
 
               temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
               mihomo_yaml = {"payload": clash_lines}
-              
-              with open(temp_yaml_path, 'w', encoding='utf-8') as f:
+
+              with open(temp_yaml_path, "w", encoding="utf-8") as f:
                   yaml.dump(mihomo_yaml, f, default_flow_style=False)
-              
+
               mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
-              
-              try:
-                  run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
-              except subprocess.CalledProcessError:
-                  print(f"Failed to compile MRS for {rule_name}")
-              
+              run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
+
               if os.path.exists(temp_yaml_path):
                   os.remove(temp_yaml_path)
 
+              # Build sing-box rule-set JSON (.json + .srs)
               sb_rules = []
-              
+
               if type_name == "geoip":
                   sb_rules.append({"ip_cidr": raw_lines})
               else:
@@ -145,8 +164,9 @@ jobs:
                   domain_full = []
                   domain_regex = []
                   domain_keyword = []
-                  
+
                   for line in raw_lines:
+                      line = strip_clash_prefix(line)
                       if line.startswith("full:"):
                           domain_full.append(line[5:])
                       elif line.startswith("regexp:"):
@@ -157,30 +177,29 @@ jobs:
                           domain_keyword.append(line[8:])
                       else:
                           domain_suffix.append(line)
-                  
+
                   rule_item = {}
-                  if domain_suffix: rule_item["domain_suffix"] = domain_suffix
-                  if domain_full: rule_item["domain"] = domain_full
-                  if domain_regex: rule_item["domain_regex"] = domain_regex
-                  if domain_keyword: rule_item["domain_keyword"] = domain_keyword
-                  
+                  if domain_suffix:
+                      rule_item["domain_suffix"] = domain_suffix
+                  if domain_full:
+                      rule_item["domain"] = domain_full
+                  if domain_regex:
+                      rule_item["domain_regex"] = domain_regex
+                  if domain_keyword:
+                      rule_item["domain_keyword"] = domain_keyword
+
                   if rule_item:
                       sb_rules.append(rule_item)
 
-              sb_json = {
-                  "version": 3,
-                  "rules": sb_rules
-              }
+              sb_json = {"version": 3, "rules": sb_rules}
               json_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.json"
               srs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.srs"
-              
-              with open(json_path, 'w', encoding='utf-8') as f:
+
+              with open(json_path, "w", encoding="utf-8") as f:
                   json.dump(sb_json, f, indent=2)
-              
-              try:
-                  run_command(f"sing-box rule-set compile --output {srs_path} {json_path}")
-              except subprocess.CalledProcessError:
-                  print(f"Failed to compile SRS for {rule_name}")
+
+              run_command(f"sing-box rule-set compile --output {srs_path} {json_path}")
+              print(f"OK: {type_name}/{rule_name} lines={len(raw_lines)}")
 
           print("Processing GeoIP files...")
           geoip_files = os.listdir(f"{TEMP_DIR}/geoip")
@@ -191,16 +210,17 @@ jobs:
           geosite_files = os.listdir(f"{TEMP_DIR}/geosite")
           for f in geosite_files:
               process_category(f"{TEMP_DIR}/geosite/{f}", "geosite", "geosite")
-          
+
           print("Done!")
 
       - name: Commit and Push to Main
         run: |
+          set -e
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           git add geoip geosite
-          
+
           if ! git diff --cached --quiet; then
             git commit -m "Update rulesets: $(date +'%Y-%m-%d %H:%M:%S')"
             git push origin HEAD:${{ github.ref }}
