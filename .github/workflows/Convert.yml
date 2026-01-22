@@ -137,11 +137,16 @@ jobs:
 
               return "suffix", line
 
-          def normalize_singbox_domain_regex(p: str) -> str:
+          def normalize_domain_regex(p: str) -> str:
               p = p.lstrip("\ufeff").strip()
               p = re.sub(r'\(\^\|\s*(?:\\\.|\\\\\.|\\\\\\\\\.)\)', r'^(.+\\.)?', p, count=1)
               if not p.startswith("^"):
                   p = "^" + p
+              return p
+
+          def normalize_mihomo_domain_regex(p: str) -> str:
+              p = normalize_domain_regex(p)
+              p = p.replace("\\\\.", "\\.")
               return p
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
@@ -171,13 +176,16 @@ jobs:
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
                       elif line.startswith("regexp:"):
-                          clash_lines.append(f"DOMAIN-REGEX,{line[7:]}")
+                          clash_lines.append(f"DOMAIN-REGEX,{normalize_mihomo_domain_regex(line[7:])}")
                       elif line.startswith("keyword:"):
                           clash_lines.append(f"DOMAIN-KEYWORD,{line[8:]}")
                       elif line.startswith("domain:"):
                           clash_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
                       elif "," in line and line.split(",", 1)[0] in {"DOMAIN","DOMAIN-SUFFIX","DOMAIN-REGEX","DOMAIN-KEYWORD"}:
-                          clash_lines.append(line)
+                          head, tail = line.split(",", 1)
+                          if head == "DOMAIN-REGEX":
+                              tail = normalize_mihomo_domain_regex(tail)
+                          clash_lines.append(f"{head},{tail}")
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
 
@@ -223,7 +231,7 @@ jobs:
                       elif kind == "full":
                           domain_full.append(value)
                       elif kind == "regex":
-                          domain_regex.append(normalize_singbox_domain_regex(value))
+                          domain_regex.append(normalize_domain_regex(value))
                       elif kind == "keyword":
                           domain_keyword.append(value)
 
