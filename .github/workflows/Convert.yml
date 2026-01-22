@@ -272,12 +272,15 @@ jobs:
           set -e
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
+          
+          git rm -r --cached geoip geosite || true
           git add geoip geosite
 
           if ! git diff --cached --quiet; then
             git commit -m "Update rulesets: $(date +'%Y-%m-%d %H:%M:%S')"
             git push origin HEAD:${{ github.ref }}
           else
+            echo "No changes detected, skipping commit."
+          fi
             echo "No changes detected, skipping commit."
           fi
