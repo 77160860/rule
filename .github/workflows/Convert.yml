@@ -138,8 +138,10 @@ jobs:
               return "suffix", line
 
           def normalize_singbox_domain_regex(p: str) -> str:
-              p = p.strip()
-              p = re.sub(r'^\(\^\|\s*(?:\\\.|\\\\\.)\)', r'^(.+\\.)?', p)
+              p = p.lstrip("\ufeff").strip()
+              p = re.sub(r'\(\^\|\s*(?:\\\.|\\\\\.|\\\\\\\\\.)\)', r'^(.+\\.)?', p, count=1)
+              if not p.startswith("^"):
+                  p = "^" + p
               return p
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
