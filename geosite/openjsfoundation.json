@@ -1,0 +1,24 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "openjsf.org",
+        "mochajs.org",
+        "nodejs.org",
+        "amp.dev",
+        "ampproject.com",
+        "ampproject.net",
+        "ampproject.org",
+        "electronjs.org",
+        "jquery.com",
+        "jquerymobile.com",
+        "jqueryui.com"
+      ],
+      "domain": [
+        "amp.akamaized.net",
+        "cdn.ampproject.org"
+      ]
+    }
+  ]
+}

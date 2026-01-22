@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "amp.dev",
+        "ampproject.com",
+        "ampproject.net",
+        "ampproject.org"
+      ],
+      "domain": [
+        "amp.akamaized.net",
+        "cdn.ampproject.org"
+      ]
+    }
+  ]
+}

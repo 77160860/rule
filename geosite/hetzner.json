@@ -1,0 +1,26 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "first-ns.de",
+        "hetzner-cloud.de",
+        "hetzner.cloud",
+        "hetzner.com",
+        "hetzner.company",
+        "hetzner.de",
+        "hetzner.social",
+        "htznr.li",
+        "second-ns.com",
+        "second-ns.de",
+        "your-objectstorage.com",
+        "your-server.de",
+        "your-storagebox.de",
+        "your-storageshare.de"
+      ],
+      "domain": [
+        "sentry.hetzner.company"
+      ]
+    }
+  ]
+}
