@@ -97,7 +97,6 @@ jobs:
               subprocess.run(cmd, shell=True, check=True)
 
           def strip_clash_prefix(s: str) -> str:
-              # Remove Clash-style prefixes that would break sing-box JSON values.
               if "," in s:
                   head, tail = s.split(",", 1)
                   if head in {
@@ -108,7 +107,6 @@ jobs:
               return s
 
           def is_ipv6_cidr(cidr: str) -> bool:
-              # Simple heuristic: IPv6 CIDR contains ':'
               return ":" in cidr
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
@@ -130,9 +128,13 @@ jobs:
               with open(category_path, "r", encoding="utf-8") as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
-              # Build Clash/Mihomo payload (.list + .mrs)
+              # For outputs:
+              # - .list wants Clash-style entries (IP-CIDR/IP-CIDR6 or DOMAIN-xxx,...)
+              # - mihomo convert-ruleset expects YAML payload values WITHOUT these prefixes.
+              clash_lines = []
+              mihomo_payload = None
+
               if type_name == "geosite":
-                  clash_lines = []
                   for line in raw_lines:
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
@@ -144,15 +146,16 @@ jobs:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
+                  mihomo_payload = clash_lines
               else:
-                  # geoip: use IP-CIDR for IPv4 and IP-CIDR6 for IPv6, otherwise mihomo fails.
-                  clash_lines = []
-                  for line in raw_lines:
-                      cidr = strip_clash_prefix(line)
+                  # geoip: build both formats
+                  cidrs = [strip_clash_prefix(x) for x in raw_lines]
+                  for cidr in cidrs:
                       if is_ipv6_cidr(cidr):
                           clash_lines.append(f"IP-CIDR6,{cidr}")
                       else:
                           clash_lines.append(f"IP-CIDR,{cidr}")
+                  mihomo_payload = cidrs  # pure CIDR list for mihomo
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
               with open(list_path, "w", encoding="utf-8") as f:
@@ -161,16 +164,15 @@ jobs:
 
               temp_yaml_path = f"{TEMP_DIR}/{rule_name}_temp.yaml"
               with open(temp_yaml_path, "w", encoding="utf-8") as f:
-                  yaml.dump({"payload": clash_lines}, f, default_flow_style=False)
+                  yaml.dump({"payload": mihomo_payload}, f, default_flow_style=False)
 
               mrs_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.mrs"
               mihomo_type = "domain" if type_name == "geosite" else "ipcidr"
               run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
               os.remove(temp_yaml_path)
 
-              # Build sing-box rule-set JSON (.json + .srs)
+              # sing-box rule-set JSON (.json + .srs)
               if type_name == "geoip":
-                  # sing-box expects pure CIDR strings (no IP-CIDR,/IP-CIDR6, prefixes).
                   cidrs = [strip_clash_prefix(x) for x in raw_lines]
                   sb_rules = [{"ip_cidr": cidrs}]
               else:
