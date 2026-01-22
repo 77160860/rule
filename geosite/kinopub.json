@@ -9,7 +9,7 @@
         "mos-gorsud.co"
       ],
       "domain_regex": [
-        "(\\w+)-static-[0-9]+\\.cdntogo\\.net$"
+        "^(\\w+)-static-[0-9]+\\.cdntogo\\.net$"
       ]
     }
   ]

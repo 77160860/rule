@@ -14,7 +14,7 @@
         "registry.k8s.io"
       ],
       "domain_regex": [
-        ".+\\.dkr\\.ecr\\.[^\\.]+\\.amazonaws\\.com$"
+        "^.+\\.dkr\\.ecr\\.[^\\.]+\\.amazonaws\\.com$"
       ]
     }
   ]

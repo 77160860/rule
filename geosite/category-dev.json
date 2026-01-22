@@ -549,7 +549,7 @@
         "cdn.ampproject.org"
       ],
       "domain_regex": [
-        ".+\\.dkr\\.ecr\\.[^\\.]+\\.amazonaws\\.com$",
+        "^.+\\.dkr\\.ecr\\.[^\\.]+\\.amazonaws\\.com$",
         "^github-production-release-asset-[0-9a-zA-Z]{6}\\.s3\\.amazonaws\\.com$"
       ]
     }
