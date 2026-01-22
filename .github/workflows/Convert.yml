@@ -36,7 +36,7 @@ jobs:
           # v2dat
           go install github.com/urlesistiana/v2dat@latest
 
-          # sing-box (linux-amd64) - no GitHub API/jq; derive version from redirect
+          # sing-box (linux-amd64) - derive version from redirect, no GitHub API/jq
           SB_LOC="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/SagerNet/sing-box/releases/latest)"
           SB_VERSION="$(printf '%s' "$SB_LOC" | sed -n 's#.*/tag/v##p')"
           if [ -z "$SB_VERSION" ]; then
@@ -51,8 +51,16 @@ jobs:
           sudo chmod +x /usr/local/bin/sing-box
           sing-box version
 
-          # mihomo (linux-amd64) - stable latest/download asset name
-          wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/latest/download/mihomo-linux-amd64.gz"
+          # mihomo (linux-amd64) - derive version from redirect, no GitHub API/jq
+          MIHOMO_LOC="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/MetaCubeX/mihomo/releases/latest)"
+          MIHOMO_TAG="$(printf '%s' "$MIHOMO_LOC" | sed -n 's#.*/tag/##p')"
+          if [ -z "$MIHOMO_TAG" ]; then
+            echo "Failed to detect mihomo tag from: $MIHOMO_LOC"
+            exit 1
+          fi
+          echo "mihomo tag: $MIHOMO_TAG"
+
+          wget -O mihomo.gz "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_TAG}/mihomo-linux-amd64-${MIHOMO_TAG}.gz"
           gunzip -f mihomo.gz
           sudo mv mihomo /usr/local/bin/
           sudo chmod +x /usr/local/bin/mihomo
@@ -76,7 +84,6 @@ jobs:
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
 
-          # Clean old outputs
           if os.path.exists(f"{OUTPUT_DIR}/geoip"):
               shutil.rmtree(f"{OUTPUT_DIR}/geoip")
           if os.path.exists(f"{OUTPUT_DIR}/geosite"):
@@ -85,19 +92,16 @@ jobs:
           os.makedirs(f"{OUTPUT_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{OUTPUT_DIR}/geosite", exist_ok=True)
 
-          # Clean temp dir
           if os.path.exists(TEMP_DIR):
               shutil.rmtree(TEMP_DIR)
           os.makedirs(f"{TEMP_DIR}/geoip", exist_ok=True)
           os.makedirs(f"{TEMP_DIR}/geosite", exist_ok=True)
 
           def run_command(cmd: str) -> None:
-              # Fail fast: if compilation fails we want the workflow to fail.
               print(f"RUN: {cmd}")
               subprocess.run(cmd, shell=True, check=True)
 
           def strip_clash_prefix(s: str) -> str:
-              # sing-box JSON values must be pure (no "DOMAIN-REGEX," etc).
               if "," in s:
                   head, tail = s.split(",", 1)
                   if head in {
@@ -126,7 +130,6 @@ jobs:
               with open(category_path, "r", encoding="utf-8") as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
-              # Build Clash/Mihomo payload (.list + .mrs)
               if type_name == "geosite":
                   clash_lines = []
                   for line in raw_lines:
@@ -141,7 +144,6 @@ jobs:
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
               else:
-                  # geoip: mihomo ipcidr input is typically Clash-style IP-CIDR entries
                   clash_lines = [f"IP-CIDR,{line}" for line in raw_lines]
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
@@ -159,7 +161,6 @@ jobs:
 
               os.remove(temp_yaml_path)
 
-              # Build sing-box rule-set JSON (.json + .srs)
               if type_name == "geoip":
                   sb_rules = [{"ip_cidr": raw_lines}]
               else:
