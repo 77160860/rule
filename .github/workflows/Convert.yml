@@ -110,12 +110,6 @@ jobs:
               return ":" in cidr
 
           def parse_geosite_line(line: str):
-              """
-              Return (kind, value) where kind in: full/suffix/regex/keyword.
-              Supports both:
-                - geosite format: full:/domain:/regexp:/keyword:
-                - clash format: DOMAIN,/DOMAIN-SUFFIX,/DOMAIN-REGEX,/DOMAIN-KEYWORD,
-              """
               line = line.strip()
               if not line:
                   return None, None
@@ -140,8 +134,13 @@ jobs:
               if line.startswith("keyword:"):
                   return "keyword", line[8:]
 
-              # default behavior (same as before): treat bare domain as suffix
               return "suffix", line
+
+          def normalize_singbox_domain_regex(p: str) -> str:
+              p = p.strip()
+              if p.startswith("(^|\\.)"):
+                  p = "^(.+\\.)?" + p[len("(^|\\.)"):]
+              return p
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
@@ -167,7 +166,6 @@ jobs:
 
               if type_name == "geosite":
                   for line in raw_lines:
-                      # Keep producing Clash-style list output for convenience
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
                       elif line.startswith("regexp:"):
@@ -177,12 +175,10 @@ jobs:
                       elif line.startswith("domain:"):
                           clash_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
                       elif "," in line and line.split(",", 1)[0] in {"DOMAIN","DOMAIN-SUFFIX","DOMAIN-REGEX","DOMAIN-KEYWORD"}:
-                          # Already Clash-format, keep as-is for .list/.mrs domain payload
                           clash_lines.append(line)
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
 
-                  # For domain ruleset, mihomo yaml payload can be the same as clash_lines.
                   mihomo_payload = clash_lines
 
               else:
@@ -192,7 +188,7 @@ jobs:
                           clash_lines.append(f"IP-CIDR6,{cidr}")
                       else:
                           clash_lines.append(f"IP-CIDR,{cidr}")
-                  mihomo_payload = cidrs  # pure CIDR list for mihomo ipcidr
+                  mihomo_payload = cidrs
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
               with open(list_path, "w", encoding="utf-8") as f:
@@ -226,7 +222,7 @@ jobs:
                       elif kind == "full":
                           domain_full.append(value)
                       elif kind == "regex":
-                          domain_regex.append(value)
+                          domain_regex.append(normalize_singbox_domain_regex(value))
                       elif kind == "keyword":
                           domain_keyword.append(value)
 
