@@ -4,8 +4,6 @@
     {
       "domain_suffix": [
         "openjsf.org",
-        "mochajs.org",
-        "nodejs.org",
         "amp.dev",
         "ampproject.com",
         "ampproject.net",
@@ -13,7 +11,9 @@
         "electronjs.org",
         "jquery.com",
         "jquerymobile.com",
-        "jqueryui.com"
+        "jqueryui.com",
+        "mochajs.org",
+        "nodejs.org"
       ],
       "domain": [
         "amp.akamaized.net",
