@@ -109,6 +109,40 @@ jobs:
           def is_ipv6_cidr(cidr: str) -> bool:
               return ":" in cidr
 
+          def parse_geosite_line(line: str):
+              """
+              Return (kind, value) where kind in: full/suffix/regex/keyword.
+              Supports both:
+                - geosite format: full:/domain:/regexp:/keyword:
+                - clash format: DOMAIN,/DOMAIN-SUFFIX,/DOMAIN-REGEX,/DOMAIN-KEYWORD,
+              """
+              line = line.strip()
+              if not line:
+                  return None, None
+
+              if "," in line:
+                  head, tail = line.split(",", 1)
+                  if head == "DOMAIN":
+                      return "full", tail
+                  if head == "DOMAIN-SUFFIX":
+                      return "suffix", tail
+                  if head == "DOMAIN-REGEX":
+                      return "regex", tail
+                  if head == "DOMAIN-KEYWORD":
+                      return "keyword", tail
+
+              if line.startswith("full:"):
+                  return "full", line[5:]
+              if line.startswith("domain:"):
+                  return "suffix", line[7:]
+              if line.startswith("regexp:"):
+                  return "regex", line[7:]
+              if line.startswith("keyword:"):
+                  return "keyword", line[8:]
+
+              # default behavior (same as before): treat bare domain as suffix
+              return "suffix", line
+
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
           v2dat_path = os.path.join(go_path, "bin", "v2dat")
 
@@ -128,14 +162,12 @@ jobs:
               with open(category_path, "r", encoding="utf-8") as f:
                   raw_lines = [line.strip() for line in f if line.strip()]
 
-              # For outputs:
-              # - .list wants Clash-style entries (IP-CIDR/IP-CIDR6 or DOMAIN-xxx,...)
-              # - mihomo convert-ruleset expects YAML payload values WITHOUT these prefixes.
               clash_lines = []
               mihomo_payload = None
 
               if type_name == "geosite":
                   for line in raw_lines:
+                      # Keep producing Clash-style list output for convenience
                       if line.startswith("full:"):
                           clash_lines.append(f"DOMAIN,{line[5:]}")
                       elif line.startswith("regexp:"):
@@ -144,18 +176,23 @@ jobs:
                           clash_lines.append(f"DOMAIN-KEYWORD,{line[8:]}")
                       elif line.startswith("domain:"):
                           clash_lines.append(f"DOMAIN-SUFFIX,{line[7:]}")
+                      elif "," in line and line.split(",", 1)[0] in {"DOMAIN","DOMAIN-SUFFIX","DOMAIN-REGEX","DOMAIN-KEYWORD"}:
+                          # Already Clash-format, keep as-is for .list/.mrs domain payload
+                          clash_lines.append(line)
                       else:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
+
+                  # For domain ruleset, mihomo yaml payload can be the same as clash_lines.
                   mihomo_payload = clash_lines
+
               else:
-                  # geoip: build both formats
                   cidrs = [strip_clash_prefix(x) for x in raw_lines]
                   for cidr in cidrs:
                       if is_ipv6_cidr(cidr):
                           clash_lines.append(f"IP-CIDR6,{cidr}")
                       else:
                           clash_lines.append(f"IP-CIDR,{cidr}")
-                  mihomo_payload = cidrs  # pure CIDR list for mihomo
+                  mihomo_payload = cidrs  # pure CIDR list for mihomo ipcidr
 
               list_path = f"{OUTPUT_DIR}/{output_subdir}/{rule_name}.list"
               with open(list_path, "w", encoding="utf-8") as f:
@@ -171,7 +208,6 @@ jobs:
               run_command(f"mihomo convert-ruleset {mihomo_type} yaml {temp_yaml_path} {mrs_path}")
               os.remove(temp_yaml_path)
 
-              # sing-box rule-set JSON (.json + .srs)
               if type_name == "geoip":
                   cidrs = [strip_clash_prefix(x) for x in raw_lines]
                   sb_rules = [{"ip_cidr": cidrs}]
@@ -182,17 +218,17 @@ jobs:
                   domain_keyword = []
 
                   for line in raw_lines:
-                      line = strip_clash_prefix(line)
-                      if line.startswith("full:"):
-                          domain_full.append(line[5:])
-                      elif line.startswith("regexp:"):
-                          domain_regex.append(line[7:])
-                      elif line.startswith("domain:"):
-                          domain_suffix.append(line[7:])
-                      elif line.startswith("keyword:"):
-                          domain_keyword.append(line[8:])
-                      else:
-                          domain_suffix.append(line)
+                      kind, value = parse_geosite_line(line)
+                      if not kind or value is None:
+                          continue
+                      if kind == "suffix":
+                          domain_suffix.append(value)
+                      elif kind == "full":
+                          domain_full.append(value)
+                      elif kind == "regex":
+                          domain_regex.append(value)
+                      elif kind == "keyword":
+                          domain_keyword.append(value)
 
                   rule_item = {}
                   if domain_suffix:
