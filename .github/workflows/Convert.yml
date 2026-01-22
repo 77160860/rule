@@ -75,6 +75,7 @@ jobs:
           import json
           import yaml
           import shutil
+          import re
 
           OUTPUT_DIR = "."
           TEMP_DIR = "temp_extract"
@@ -138,8 +139,7 @@ jobs:
 
           def normalize_singbox_domain_regex(p: str) -> str:
               p = p.strip()
-              if p.startswith("(^|\\.)"):
-                  p = "^(.+\\.)?" + p[len("(^|\\.)"):]
+              p = re.sub(r'^\(\^\|\s*(?:\\\.|\\\\\.)\)', r'^(.+\\.)?', p)
               return p
 
           go_path = subprocess.check_output("go env GOPATH", shell=True).decode().strip()
@@ -180,7 +180,6 @@ jobs:
                           clash_lines.append(f"DOMAIN-SUFFIX,{line}")
 
                   mihomo_payload = clash_lines
-
               else:
                   cidrs = [strip_clash_prefix(x) for x in raw_lines]
                   for cidr in cidrs:
