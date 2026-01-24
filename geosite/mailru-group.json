@@ -7,9 +7,6 @@
         "donationalerts.com",
         "memealerts.com",
         "tamtam.chat",
-        "ok.ru",
-        "okcdn.ru",
-        "mycdn.me",
         "cdn-vk.ru",
         "mradx.net",
         "mvk.com",
@@ -49,7 +46,10 @@
         "dzen.ru",
         "dzeninfra.ru",
         "imgsmail.ru",
-        "mail.ru"
+        "mail.ru",
+        "ok.ru",
+        "okcdn.ru",
+        "mycdn.me"
       ]
     }
   ]
