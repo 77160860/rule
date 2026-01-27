@@ -3,9 +3,9 @@
   "rules": [
     {
       "domain_suffix": [
-        "doc88.com",
         "docin.com",
-        "douding.cn"
+        "douding.cn",
+        "doc88.com"
       ]
     }
   ]
