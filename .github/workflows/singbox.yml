@@ -1,0 +1,308 @@
+name: singbox
+on:
+  #自动编译：当Auto-Clean运行完成后
+  workflow_run:
+    workflows: ["Auto-Clean"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.0
+
+      - name: Setup sing-box
+        env:
+          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.14.0-alpha.28/sing-box_1.14.0-alpha.28_linux_amd64.deb"
+        run: |
+          set -Eeuo pipefail
+          wget -O sing-box.deb $SING_BOX_DEB_URL
+          sudo dpkg -i sing-box.deb
+          rm -f sing-box.deb
+          sing-box version
+
+      - name: Set up Python3
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml
+
+      - name: Run Python script
+        run: |
+          mkdir -p ./singbox
+          
+          python3 << 'EOF'
+          import os
+          import json
+          import subprocess
+          import requests
+          import yaml
+          import ipaddress
+          from collections import defaultdict
+
+          MAP_DICT = {
+              'DOMAIN': 'domain',
+              'HOST': 'domain',
+              'host': 'domain',
+              'DOMAIN-SUFFIX': 'domain_suffix',
+              'HOST-SUFFIX': 'domain_suffix',
+              'host-suffix': 'domain_suffix',
+              'DOMAIN-KEYWORD': 'domain_keyword',
+              'HOST-KEYWORD': 'domain_keyword',
+              'host-keyword': 'domain_keyword',
+              'IP-CIDR': 'ip_cidr',
+              'ip-cidr': 'ip_cidr',
+              'IP-CIDR6': 'ip_cidr',
+              'IP6-CIDR': 'ip_cidr',
+              'SRC-IP-CIDR': 'source_ip_cidr',
+              'GEOIP': 'geoip',
+              'DST-PORT': 'port',
+              'SRC-PORT': 'source_port',
+              'URL-REGEX': 'domain_regex',
+              'DOMAIN-REGEX': 'domain_regex'
+          }
+
+          RULE_ORDER = [
+              'domain',
+              'domain_suffix',
+              'domain_keyword',
+              'domain_regex',
+              'ip_cidr',
+              'source_ip_cidr',
+              'geoip',
+              'port',
+              'source_port'
+          ]
+
+          def is_valid_ip_cidr(s):
+              s = s.strip()
+              if not s or s.startswith('#'):
+                  return False
+              try:
+                  ipaddress.ip_network(s, strict=False)
+                  return True
+              except:
+                  return False
+
+          def normalize_address(address):
+              if not address:
+                  return None
+              address = address.strip()
+              while address.startswith('+') or address.startswith('.'):
+                  address = address[1:]
+              return address if address else None
+
+          def parse_line(line):
+              line = line.strip()
+              if not line or line.startswith(('#', '//', 'payload:')):
+                  return None, None
+              
+              if line.startswith('-'):
+                  line = line[1:].strip()
+              
+              if ' #' in line:
+                  line = line.split(' #', 1)[0].strip()
+              elif ' //' in line:
+                  line = line.split(' //', 1)[0].strip()
+              
+              line = line.strip("'\"")
+              
+              if ',' in line:
+                  parts = [p.strip() for p in line.split(',')]
+                  pattern = parts[0]
+                  address = parts[1] if len(parts) > 1 else ''
+              else:
+                  if is_valid_ip_cidr(line):
+                      pattern = 'IP-CIDR'
+                      address = line
+                  elif line.startswith('+.') or line.startswith('.'):
+                      pattern = 'DOMAIN-SUFFIX'
+                      address = normalize_address(line)
+                  else:
+                      pattern = 'DOMAIN'
+                      address = line
+                      
+              address = normalize_address(address)
+              if not address:
+                  return None, None
+              return pattern, address
+
+          def parse_and_convert_to_rules(link):
+              rules_dict = defaultdict(set)
+              try:
+                  headers = {'User-Agent': 'Mozilla/5.0'}
+                  response = requests.get(link, headers=headers, timeout=15)
+                  response.raise_for_status()
+                  content = response.text
+              except Exception as e:
+                  print(f"[WARNING] 无法读取 {link}: {str(e)}")
+                  return None
+
+              is_yaml = link.endswith('.yaml') or link.endswith('.yml')
+              parsed = False
+              
+              if is_yaml:
+                  try:
+                      yaml_data = yaml.safe_load(content)
+                      if yaml_data:
+                          items = []
+                          if isinstance(yaml_data, dict):
+                              items = yaml_data.get('payload', [])
+                          elif isinstance(yaml_data, list):
+                              items = yaml_data
+                          
+                          for item in items:
+                              pattern, address = parse_line(str(item))
+                              if pattern in MAP_DICT:
+                                  mapped = MAP_DICT[pattern]
+                                  rules_dict[mapped].add(address)
+                          parsed = True
+                  except Exception as e:
+                      print(f"[WARNING] YAML 解析失败: {str(e)}, 尝试纯文本解析")
+                      parsed = False
+
+              if not parsed:
+                  for line in content.splitlines():
+                      pattern, address = parse_line(line)
+                      if pattern in MAP_DICT:
+                          mapped = MAP_DICT[pattern]
+                          rules_dict[mapped].add(address)
+
+              return rules_dict
+
+          def sort_dict(obj):
+              if isinstance(obj, dict):
+                  return {k: sort_dict(obj[k]) for k in sorted(obj)}
+              elif isinstance(obj, list) and all(isinstance(elem, dict) for elem in obj):
+                  return sorted([sort_dict(x) for x in obj], key=lambda d: str(sorted(d.keys())[0]) if d else "")
+              elif isinstance(obj, list):
+                  return [sort_dict(x) for x in obj]
+              else:
+                  return obj
+
+          def build_result_rules(rules_dict):
+              result_rules = {
+                  "version": 5,
+                  "rules": []
+              }
+              for rule_type in RULE_ORDER:
+                  if rule_type in rules_dict and rules_dict[rule_type]:
+                      unique_addresses = sorted(list(rules_dict[rule_type]))
+                      result_rules["rules"].append({
+                          rule_type: unique_addresses
+                      })
+              return result_rules
+
+          def parse_list_file(link, output_directory):
+              try:
+                  if '@' in link:
+                      parts = link.rsplit('@', 1)
+                      url = parts[0]
+                      custom_name = parts[1] if len(parts) > 1 and '/' not in parts[1] else None
+                      base_filename = custom_name if custom_name else os.path.basename(url).split('.')[0]
+                  else:
+                      url = link
+                      base_filename = os.path.basename(url).split('.')[0]
+                  
+                  print(f"[处理] 开始处理: {base_filename}")
+                  
+                  rules_dict = parse_and_convert_to_rules(url)
+                  if not rules_dict:
+                      print(f"[警告] {base_filename}: 没有有效数据")
+                      return None
+                  
+                  result_rules = build_result_rules(rules_dict)
+                  os.makedirs(output_directory, exist_ok=True)
+                  
+                  file_name = os.path.join(output_directory, f"{base_filename}.json")
+                  with open(file_name, 'w', encoding='utf-8') as output_file:
+                      result_rules_str = json.dumps(
+                          sort_dict(result_rules),
+                          ensure_ascii=False,
+                          indent=2
+                      )
+                      result_rules_str = result_rules_str.replace('\\\\', '\\')
+                      output_file.write(result_rules_str)
+                  
+                  print(f"[✓] JSON 生成: {file_name}")
+                  
+                  srs_path = file_name.replace(".json", ".srs")
+                  result = subprocess.run(
+                      ["sing-box", "rule-set", "compile", "--output", srs_path, file_name],
+                      capture_output=True,
+                      text=True,
+                      timeout=60
+                  )
+                  
+                  if result.returncode != 0:
+                      print(f"[✗] SRS 编译失败 ({base_filename}): {result.stderr}")
+                  else:
+                      print(f"[✓] SRS 编译成功: {srs_path}")
+                  
+                  total_rules = sum(len(v) for rule in result_rules['rules'] for v in rule.values())
+                  print(f"[统计] {base_filename}: 总规则数 = {total_rules}")
+                  
+                  return file_name
+              
+              except Exception as e:
+                  print(f"[✗] 处理失败: {link} 原因: {str(e)}")
+                  return None
+
+          print("=" * 60)
+          print("Sing-box规则转换工具")
+          print("=" * 60)
+
+          try:
+              with open("./rule.txt", 'r', encoding='utf-8') as links_file:
+                  links = links_file.read().splitlines()
+          except FileNotFoundError:
+              print("[✗] 错误: 未找到 rule.txt 文件")
+              exit(1)
+
+          links = [l.strip() for l in links if l.strip() and not l.strip().startswith("#")]
+
+          if not links:
+              print("[✗] 错误: rule.txt 中没有有效的链接")
+              exit(1)
+
+          print(f"[信息] 检测到 {len(links)} 个规则链接\n")
+
+          output_dir = "./singbox"
+          result_file_names = []
+
+          for idx, link in enumerate(links, 1):
+              print(f"\n[{idx}/{len(links)}] 处理链接:")
+              result_file_name = parse_list_file(link, output_directory=output_dir)
+              if result_file_name:
+                  result_file_names.append(result_file_name)
+
+          print("\n" + "=" * 60)
+          print(f"处理完成! 成功生成 {len(result_file_names)} 个规则文件")
+          print("=" * 60)
+          EOF
+
+      - name: Commit and push rules
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add ./singbox/*.json
+          git add ./singbox/*.srs
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update sing-box rules $(date +%Y-%m-%d)"
+            git pull --rebase origin main || true
+            git push
+          fi

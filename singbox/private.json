@@ -1,0 +1,44 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "asusrouter.com",
+        "local.adguard.org",
+        "miwifi.com",
+        "oasisauth.h3c.com",
+        "router.asus.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "arpa",
+        "example",
+        "hiwifi.com",
+        "internal",
+        "invalid",
+        "lan",
+        "leike.cc",
+        "local",
+        "localdomain",
+        "localhost",
+        "localhost.ptlogin2.qq.com",
+        "localhost.sec.qq.com",
+        "my.router",
+        "p.to",
+        "peiluyou.com",
+        "phicomm.me",
+        "plex.direct",
+        "router.ctc",
+        "routerlogin.com",
+        "tendawifi.com",
+        "test",
+        "tplinkwifi.net",
+        "tplogin.cn",
+        "ts.net",
+        "wifi.cmcc",
+        "zte.home"
+      ]
+    }
+  ],
+  "version": 5
+}

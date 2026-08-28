@@ -1,0 +1,11 @@
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMax/ChinaMax_Domain.txt@cn
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_IP.txt@cnip
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Domain.txt@proxy
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Domain.txt@apple
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.list@micro
+https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Surge-RULE-SET.list@adblock
+#https://raw.githubusercontent.com/217heidai/adblockfilters/refs/heads/main/rules/adblockmihomolite.yaml@adblock
+https://raw.githubusercontent.com/77160860/rule/refs/heads/main/mihomo/pvip.txt
+https://raw.githubusercontent.com/77160860/rule/refs/heads/main/private.list
+https://raw.githubusercontent.com/77160860/rule/refs/heads/main/me.list
+https://core.telegram.org/resources/cidr.txt@tgip
