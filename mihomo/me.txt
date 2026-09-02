@@ -6,6 +6,7 @@
 +.acgnya.com
 +.akamaized.net
 +.auete.top
++.baidu-preferred.cc
 +.bangumi.ca
 +.bgm.tv
 +.bigwawk.cc
