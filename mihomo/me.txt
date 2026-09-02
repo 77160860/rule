@@ -3,6 +3,7 @@
 +.2xiaopan.fun
 +.67c6c7a.com
 +.95112475.xyz
++.acgnya.com
 +.akamaized.net
 +.auete.top
 +.bangumi.ca
@@ -44,7 +45,9 @@
 +.feiwang.cc
 +.ffzy-plays.com
 +.ffzy888.com
++.ffzypic.com
 +.filmaffinity.com
++.findjs.top
 +.ggtvb.cc
 +.gh-proxy.com
 +.gh-proxy.org
@@ -55,11 +58,14 @@
 +.hbmysy.com
 +.heimuer.tv
 +.hkybqufgh.com
++.hxx2023.cc
++.hxx2027.cc
 +.iqiyizyimg.com
 +.istatmenus.app
 +.jimxtc.com
 +.jsdelivr.net
 +.kdns.fr
++.leshizyimg.com
 +.libvio.mov
 +.ln632.com
 +.macked.app
@@ -74,8 +80,10 @@
 +.oracle.com
 +.oraclecloud.com
 +.ottiptv.cc
++.picbf.com
 +.play-cdn17.com
 +.riotgames.com
++.ry-pic.com
 +.ryzypics.com
 +.shangchengtong.net
 +.shrekmedia.org
@@ -100,6 +108,7 @@
 +.xdrig.com
 +.xsayang.fun
 +.xy4k.com
++.yinghuazy.xyz
 +.ymck.pro
 +.yykx.top
 +.yylx.win
