@@ -84,6 +84,7 @@
 +.play-cdn17.com
 +.riotgames.com
 +.ry-pic.com
++.ryiplay18.com
 +.ryzypics.com
 +.shangchengtong.net
 +.shrekmedia.org
