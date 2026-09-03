@@ -114,3 +114,4 @@
 +.ymck.pro
 +.yykx.top
 +.yylx.win
+api.revenuecat.com
