@@ -1,6 +1,11 @@
 {
   "rules": [
     {
+      "domain": [
+        "api.revenuecat.com"
+      ]
+    },
+    {
       "domain_suffix": [
         "10135.com",
         "28.al",
