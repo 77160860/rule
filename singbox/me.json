@@ -1,11 +1,6 @@
 {
   "rules": [
     {
-      "domain": [
-        "api.revenuecat.com"
-      ]
-    },
-    {
       "domain_suffix": [
         "10135.com",
         "28.al",
@@ -45,7 +40,6 @@
         "db-ip.com",
         "dytt-cinema.com",
         "dytt-film.com",
-        "dytt-img.com",
         "dytt-tvs.com",
         "dyttzyapi.com",
         "earthol.com",
@@ -55,7 +49,6 @@
         "feiwang.cc",
         "ffzy-plays.com",
         "ffzy888.com",
-        "ffzypic.com",
         "filmaffinity.com",
         "findjs.top",
         "ggtvb.cc",
@@ -70,12 +63,10 @@
         "hkybqufgh.com",
         "hxx2023.cc",
         "hxx2027.cc",
-        "iqiyizyimg.com",
         "istatmenus.app",
         "jimxtc.com",
         "jsdelivr.net",
         "kdns.fr",
-        "leshizyimg.com",
         "libvio.mov",
         "ln632.com",
         "macked.app",
@@ -90,12 +81,9 @@
         "oracle.com",
         "oraclecloud.com",
         "ottiptv.cc",
-        "picbf.com",
         "play-cdn17.com",
         "riotgames.com",
-        "ry-pic.com",
         "ryiplay18.com",
-        "ryzypics.com",
         "shangchengtong.net",
         "shrekmedia.org",
         "snssdk.com",
