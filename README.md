@@ -8,20 +8,18 @@
 singbox:
 ```json
 {
-  "tag": "adblock",
+  "tag": "cn",
   "type": "remote",
   "format": "binary",
   "url": "https://gh-proxy.org/github.com/77160860/rule/raw/main/singbox/cn.srs",
-  "download_detour": "DIRECT"
 }
 ```
 ```json
 {
-  "tag": "filter",
+  "tag": "cn",
   "type": "remote",
   "format": "source",
   "url": "https://gh-proxy.org/github.com/77160860/rule/raw/main/singbox/cn.json",
-  "download_detour": "DIRECT"
 }
 ```
 mihomo:
