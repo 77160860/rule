@@ -95,7 +95,7 @@ DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
 DOMAIN-SUFFIX,jimxtc.com
 DOMAIN-SUFFIX,cachefly.net
-# cloudflare@cn
+# cf@cn
 DOMAIN-SUFFIX,cf-ns.com
 DOMAIN-SUFFIX,cf-ns.net
 DOMAIN-SUFFIX,cf-ns.site
