@@ -1,6 +1,11 @@
 {
   "rules": [
     {
+      "domain": [
+        "lite.cn2gias.uk"
+      ]
+    },
+    {
       "domain_suffix": [
         "10135.com",
         "28.al",
