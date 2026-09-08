@@ -33,6 +33,7 @@
 +.cloudflareprod.com
 +.cloudflarestaging.com
 +.cloudflarestoragegw.com
++.cn2gias.uk
 +.db-ip.com
 +.dytt-cinema.com
 +.dytt-film.com
@@ -84,7 +85,6 @@
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
-+.sntp.uk
 +.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
