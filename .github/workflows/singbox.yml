@@ -19,7 +19,7 @@ jobs:
 
       - name: Setup sing-box
         env:
-          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.14.0-alpha.28/sing-box_1.14.0-alpha.28_linux_amd64.deb"
+          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.14.0/sing-box_1.14.0_linux_amd64.deb"
         run: |
           set -Eeuo pipefail
           wget -O sing-box.deb $SING_BOX_DEB_URL
