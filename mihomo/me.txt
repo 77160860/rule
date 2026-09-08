@@ -33,6 +33,7 @@
 +.cloudflareprod.com
 +.cloudflarestaging.com
 +.cloudflarestoragegw.com
++.cn2gias.uk
 +.db-ip.com
 +.dytt-cinema.com
 +.dytt-film.com
