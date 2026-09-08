@@ -72,6 +72,7 @@
 +.mk1080.top
 +.muou.asia
 +.muou.site
++.newsntp.com
 +.nn.ci
 +.nyc.mn
 +.oracle.com
