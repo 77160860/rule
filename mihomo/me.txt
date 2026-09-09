@@ -51,7 +51,6 @@
 +.gh-proxy.com
 +.gh-proxy.org
 +.ghfast.top
-+.gossip.lat
 +.gugu3.com
 +.hbbz.top
 +.hbmysy.com
