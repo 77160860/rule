@@ -1,12 +1,6 @@
 {
   "rules": [
     {
-      "domain": [
-        "a-ocnfniawgw.cn-shanghai.fcapp.run",
-        "anyrouter.top"
-      ]
-    },
-    {
       "domain_suffix": [
         "10135.com",
         "28.al",
