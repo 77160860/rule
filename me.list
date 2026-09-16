@@ -27,9 +27,10 @@ DOMAIN-SUFFIX,newsntp.com
 DOMAIN-SUFFIX,staryuki.com
 DOMAIN-SUFFIX,shrekmedia.org
 DOMAIN-SUFFIX,bangumi.ca
-DOMAIN-SUFFIX,tmdb.org
 DOMAIN-SUFFIX,trakt.tv
+DOMAIN-SUFFIX,tmdb.org
 DOMAIN-SUFFIX,themoviedb.org
+DOMAIN-SUFFIX,theintrodb.org
 # 影视仓
 DOMAIN-SUFFIX,ottiptv.cc
 DOMAIN-SUFFIX,wogg.net
