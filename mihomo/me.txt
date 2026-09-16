@@ -87,6 +87,7 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
++.theintrodb.org
 +.themoviedb.org
 +.tmdb.org
 +.trakt.tv
