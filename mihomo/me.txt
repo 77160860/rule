@@ -22,7 +22,6 @@
 +.cftest6.cn
 +.cftest7.com
 +.cftest8.com
-+.ciallo.party
 +.cloudflare-cn.com
 +.cloudflareanycast.net
 +.cloudflarechina.cn
@@ -88,7 +87,6 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
-+.teawaya.com
 +.themoviedb.org
 +.thetvdb.com
 +.tmdb.org
