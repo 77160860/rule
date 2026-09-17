@@ -1,8 +1,10 @@
 +.10135.com
++.28.al
 +.2xiaopan.fun
 +.67c6c7a.com
 +.95112475.xyz
 +.acgnya.com
++.aemby.de
 +.akamaized.net
 +.auete.top
 +.baidu-preferred.cc
@@ -85,9 +87,11 @@
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
++.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
++.teawaya.com
 +.theintrodb.org
 +.themoviedb.org
 +.tmdb.org
