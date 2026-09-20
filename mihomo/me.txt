@@ -56,6 +56,7 @@
 +.gh-proxy.com
 +.gh-proxy.org
 +.ghfast.top
++.guangyacdn.com
 +.gugu3.com
 +.hbbz.top
 +.hbmysy.com
@@ -114,4 +115,3 @@
 +.ymck.pro
 +.yykx.top
 +.yylx.win
-DOMAIN-SUFFIX.guangyacdn.com
