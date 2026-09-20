@@ -1,10 +1,16 @@
 {
   "rules": [
     {
+      "domain": [
+        "DOMAIN-SUFFIX.guangyacdn.com"
+      ]
+    },
+    {
       "domain_suffix": [
         "10135.com",
         "28.al",
         "2xiaopan.fun",
+        "585820.xyz",
         "67c6c7a.com",
         "95112475.xyz",
         "acgnya.com",
@@ -39,6 +45,7 @@
         "cloudflareprod.com",
         "cloudflarestaging.com",
         "cloudflarestoragegw.com",
+        "cmecloud.cn",
         "ctobsnssdk.com",
         "db-ip.com",
         "dytt-cinema.com",
