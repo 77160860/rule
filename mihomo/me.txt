@@ -6,6 +6,7 @@
 +.acgnya.com
 +.aemby.de
 +.akamaized.net
++.anyrouter.top
 +.auete.top
 +.baidu-preferred.cc
 +.bangumi.ca
