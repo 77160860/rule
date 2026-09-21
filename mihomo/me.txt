@@ -65,7 +65,6 @@
 +.huangmin.cc.cd
 +.hxx2023.cc
 +.hxx2027.cc
-+.introdb.app
 +.istatmenus.app
 +.itsmygo.tv
 +.jimxtc.com
@@ -96,10 +95,6 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
-+.teawaya.com
-+.theintrodb.org
-+.themoviedb.org
-+.tmdb.org
 +.viptulz.com
 +.weserv.nl
 +.whxiecheng.com
