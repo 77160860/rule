@@ -1,9 +1,3 @@
-# api
-DOMAIN-SUFFIX,api.abnt.it
-DOMAIN-SUFFIX,wududu.edu.kg
-DOMAIN-SUFFIX,luckyg.131518.xyz
-DOMAIN-SUFFIX,xn--wnup5g6so4wn.de5.net
-DOMAIN-SUFFIX,l0veyou.com
 # Web
 DOMAIN-SUFFIX,db-ip.com
 DOMAIN-SUFFIX,hbbz.top
@@ -25,6 +19,7 @@ DOMAIN-SUFFIX,earthol.com
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,enaturehome.com
 DOMAIN-SUFFIX,shangchengtong.net
+DOMAIN-SUFFIX,xn--wnup5g6so4wn.de5.net
 # emby
 DOMAIN-SUFFIX,bangumi.ca
 DOMAIN-SUFFIX,itsmygo.tv
