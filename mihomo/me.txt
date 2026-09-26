@@ -20,7 +20,6 @@
 +.cf-ns.net
 +.cf-ns.site
 +.cf-ns.tech
-+.cf.sfcj.org
 +.cftest5.cn
 +.cftest6.cn
 +.cftest7.com
@@ -45,6 +44,8 @@
 +.dyttzyapi.com
 +.earthol.com
 +.earthol.me
++.emby.pro
++.embyplus.org
 +.enaturehome.com
 +.enjoymovie.net
 +.feiwang.cc
@@ -69,12 +70,12 @@
 +.itsmygo.tv
 +.jimxtc.com
 +.jsdelivr.net
++.justwoker.icu
 +.kdns.fr
 +.libvio.mov
 +.ln632.com
 +.macked.app
 +.macked.homes
-+.media.emby.pro
 +.mihdr.top
 +.miqk.cc
 +.mk1080.top
@@ -87,6 +88,7 @@
 +.play-cdn17.com
 +.riotgames.com
 +.ryiplay18.com
++.sfcj.org
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
@@ -103,7 +105,6 @@
 +.wupgapy.cc
 +.xb6v.com
 +.xdrig.com
-+.xn--wnup5g6so4wn.de5.net
 +.xsayang.fun
 +.xy4k.com
 +.yinghuazy.xyz
