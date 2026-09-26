@@ -1,4 +1,5 @@
 # Web
+DOMAIN-SUFFIX,justwoker.icu
 DOMAIN-SUFFIX,db-ip.com
 DOMAIN-SUFFIX,hbbz.top
 DOMAIN-SUFFIX,snssdk.com
@@ -19,19 +20,19 @@ DOMAIN-SUFFIX,earthol.com
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,enaturehome.com
 DOMAIN-SUFFIX,shangchengtong.net
-DOMAIN-SUFFIX,xn--wnup5g6so4wn.de5.net
 # emby
 DOMAIN-SUFFIX,bangumi.ca
 DOMAIN-SUFFIX,itsmygo.tv
 DOMAIN-SUFFIX,newsntp.com
+DOMAIN-SUFFIX,embyplus.org
 DOMAIN-SUFFIX,ciallo.party
 DOMAIN-SUFFIX,shrekmedia.org
 DOMAIN-SUFFIX,huangmin.cc.cd
 DOMAIN-SUFFIX,585820.xyz
 DOMAIN-SUFFIX,cmecloud.cn
 DOMAIN-SUFFIX,guangyacdn.com
-DOMAIN-SUFFIX,cf.sfcj.org
-DOMAIN-SUFFIX,media.emby.pro
+DOMAIN-SUFFIX,sfcj.org
+DOMAIN-SUFFIX,emby.pro
 DOMAIN-SUFFIX,28.al
 DOMAIN-SUFFIX,aemby.de
 DOMAIN-SUFFIX,yykx.top
