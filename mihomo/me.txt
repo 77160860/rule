@@ -70,6 +70,7 @@
 +.jimxtc.com
 +.jsdelivr.net
 +.justwoker.icu
++.kcode.wiki
 +.kdns.fr
 +.libvio.mov
 +.ln632.com
