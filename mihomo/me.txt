@@ -8,6 +8,8 @@
 +.aemby.de
 +.akamaized.net
 +.auete.top
++.b4a.run
++.back4app.com
 +.baidu-preferred.cc
 +.bangumi.ca
 +.bgm.tv
@@ -70,7 +72,6 @@
 +.jimxtc.com
 +.jsdelivr.net
 +.justwoker.icu
-+.kcode.wiki
 +.kdns.fr
 +.libvio.mov
 +.ln632.com
@@ -96,6 +97,7 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
++.vercel.app
 +.viptulz.com
 +.weserv.nl
 +.whxiecheng.com
