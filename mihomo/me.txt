@@ -3,7 +3,6 @@
 +.2xiaopan.fun
 +.585820.xyz
 +.67c6c7a.com
-+.8888.name
 +.95112475.xyz
 +.acgnya.com
 +.aemby.de
@@ -38,6 +37,7 @@
 +.cloudflarestoragegw.com
 +.cmecloud.cn
 +.ctobsnssdk.com
++.dabo.im
 +.db-ip.com
 +.dytt-cinema.com
 +.dytt-film.com
