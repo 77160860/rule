@@ -87,6 +87,7 @@
 +.nyc.mn
 +.ottiptv.cc
 +.play-cdn17.com
++.ps.air-outer.com
 +.riotgames.com
 +.ryiplay18.com
 +.sfcj.org
