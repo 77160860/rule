@@ -8,8 +8,6 @@
 +.aemby.de
 +.akamaized.net
 +.auete.top
-+.b4a.run
-+.back4app.com
 +.baidu-preferred.cc
 +.bangumi.ca
 +.bgm.tv
@@ -98,7 +96,6 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
-+.vercel.app
 +.viptulz.com
 +.weserv.nl
 +.whxiecheng.com
