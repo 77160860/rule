@@ -38,7 +38,6 @@
 +.cloudflarestoragegw.com
 +.cmecloud.cn
 +.ctobsnssdk.com
-+.dabo.im
 +.db-ip.com
 +.dytt-cinema.com
 +.dytt-film.com
@@ -71,7 +70,6 @@
 +.itsmygo.tv
 +.jimxtc.com
 +.jsdelivr.net
-+.justwoker.icu
 +.kdns.fr
 +.libvio.mov
 +.ln632.com
@@ -88,7 +86,6 @@
 +.nyc.mn
 +.ottiptv.cc
 +.play-cdn17.com
-+.ps.air-outer.com
 +.riotgames.com
 +.ryiplay18.com
 +.sfcj.org
@@ -105,7 +102,6 @@
 +.wogg.lol
 +.wogg.net
 +.worklook.top
-+.wududu.edu.kg
 +.wupgapy.cc
 +.xb6v.com
 +.xdrig.com
