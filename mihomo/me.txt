@@ -45,7 +45,6 @@
 +.dyttzyapi.com
 +.earthol.com
 +.earthol.me
-+.emby.pro
 +.enaturehome.com
 +.enjoymovie.net
 +.feiwang.cc
