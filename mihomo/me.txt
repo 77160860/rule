@@ -87,7 +87,6 @@
 +.play-cdn17.com
 +.riotgames.com
 +.ryiplay18.com
-+.sfcj.org
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
