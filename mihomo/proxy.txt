@@ -19422,6 +19422,7 @@
 +.mega.co.nz
 +.mega.io
 +.mega.nz
++.megaad.nz
 +.megacamz.com
 +.megaeth.com
 +.megafilmporno.com
@@ -19433,12 +19434,14 @@
 +.megamarket.ru
 +.megamarket.tech
 +.megamon.co.kr
++.megapay.nz
 +.megaphone.fm
 +.megapornfreehd.com
 +.megaporno.com.br
 +.megapornpics.com
 +.megaproxy.com
 +.megarotic.com
++.megas4.com
 +.megasrv.de
 +.megatitsminka.com
 +.megaupload.com
@@ -24750,7 +24753,6 @@
 +.prozz.net
 +.prpops.com
 +.prs-ltsn.ac.uk
-+.prts.plus
 +.prucomm.ac.uk
 +.prvbank.ru
 +.ps-exchange.com
@@ -30020,6 +30022,7 @@
 +.transarmuito.com
 +.transcamslive.com
 +.transcocon.ac.uk
++.transfer.it
 +.transferwise.com
 +.transforming-musicology.ac.uk
 +.transformingmusicology.ac.uk
