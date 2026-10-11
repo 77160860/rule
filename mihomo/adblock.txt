@@ -57,6 +57,7 @@
 +.0oi1ej7mo.com
 +.0oo9j37xp.com
 +.0otmh22aj2.com
++.0qry58i9es.com
 +.0qxfxqif0.com
 +.0s1wclct6.com
 +.0s5qb3rfz.com
@@ -111,8 +112,8 @@
 +.121yscfk5e.com
 +.123.sogou.com
 +.123cha.com
-+.124to81tc.com
 +.12551-1311572332.cos.ap-shanghai.myqcloud.com
++.126.cn
 +.129esrd5q5.com
 +.12ypksztq.com
 +.12yr3wkwi5.com
@@ -447,6 +448,7 @@
 +.51.la
 +.511a.cn
 +.51240.com
++.5166.info
 +.518ad.com
 +.51link.com
 +.51mitu.com
@@ -661,6 +663,7 @@
 +.7gp33kffg6.com
 +.7ho8oc3svg.com
 +.7imz0d5nay.com
++.7istqn6fh.com
 +.7iwxojx1s.com
 +.7jf3kxi6bq.com
 +.7jqi6um1g.com
@@ -689,6 +692,7 @@
 +.7ue931y0gn.com
 +.7usgqu07mk.com
 +.7w7kditsz.com
++.7xi9g1.com1.z0.glb.clouddn.com
 +.7xkdyg9b8k.com
 +.7xm6spgwu.com
 +.7xx3jbcil.com
@@ -980,6 +984,7 @@
 +.ad.12306.cn.wscdns.com
 +.ad.163.com
 +.ad.3.cn
++.ad.51wnl-cq.com
 +.ad.51wnl.com
 +.ad.980x.com
 +.ad.a.yximgs.com
@@ -1048,7 +1053,6 @@
 +.ad.southcn.com
 +.ad.sunflower.vn
 +.ad.tencentmusic.com
-+.ad.thsi.cn
 +.ad.toutiao.com
 +.ad.us.sinaimg.cn
 +.ad.v3mh.com
@@ -1405,6 +1409,7 @@
 +.afp.alicdn.com
 +.africa.edm.globalsources.com
 +.agd2.p.360.cn
++.agoodm.m.taobao.com
 +.ahm.jiankang123.net
 +.ahtjhe1bka.com
 +.ai-kit.cn
@@ -2070,6 +2075,7 @@
 +.btm9uso7t.com
 +.btrace.qq.com
 +.btrace.video.qq.com
++.btrace.ysp.cctv.cn
 +.bts-la.ucweb.com
 +.btyou.com
 +.bu.antutu.net
@@ -2687,7 +2693,6 @@
 +.dfi09241kq.com
 +.dfi09250kq.com
 +.dgnqrl.icu
-+.dgrj.com.cn
 +.dgrpeldt54.com
 +.dh5t3pyb6r.com
 +.dh8ypn3lq8.com
@@ -2748,6 +2753,7 @@
 +.dms.fx678.com
 +.dmym.fwol.cn
 +.dmyzf4op0.com
++.dn-growing.qbox.me
 +.dn1pvim4v1.com
 +.dnconfig.cmpassport.com
 +.dncvj.cn
@@ -3346,6 +3352,7 @@
 +.game.res.meizu.com
 +.game.weibo.cn
 +.gameanalytics.com
++.gamebox.sec.miui.com
 +.ganjituiguang.ganji.com
 +.gaode-jmacs.m.taobao.com
 +.gaoshouyou.com
@@ -3378,6 +3385,7 @@
 +.gecko3-lf.zijieapi.com
 +.gecko5-lf.zijieapi.com
 +.gef153x1u.com
++.gefxhyby9.com
 +.gennewggffyjhsad.edgeone.dev
 +.gentian-frd.hjapi.com
 +.geo.go2s.co
@@ -3414,6 +3422,12 @@
 +.ggo10111lq.com
 +.ggo10120lq.com
 +.ggo10121lq.com
++.ggo10130lq.com
++.ggo10131lq.com
++.ggo10140lq.com
++.ggo10141lq.com
++.ggo10150lq.com
++.ggo10151lq.com
 +.ggs.myzaker.com
 +.ggtp-1255424916.cos.ap-chengdu.myqcloud.com
 +.ggw.gusuwang.com
@@ -3816,6 +3830,7 @@
 +.huichuan-mc.sm.cn
 +.huichuan.sm.cn
 +.huishenghuiying.com.cn
++.hungfei.com
 +.huoche.com.cn
 +.huodong.ios.shouji.360.cn
 +.huodong.m.taobao.com
@@ -5065,6 +5080,7 @@
 +.mm.paizi.net
 +.mmds.suning.com
 +.mmes30jla.com
++.mmftdt.com
 +.mmgame.qpic.cn
 +.mmkkiivv.com
 +.mngjrn.cn
@@ -5220,6 +5236,7 @@
 +.mxana.tacool.com
 +.mxauvrtdm.com
 +.mxevdii.cn
++.my-hr.cn
 +.my-material.zone1.meitudata.com
 +.my1746vnm.com
 +.mya2pg8cdg.com
@@ -5267,6 +5284,7 @@
 +.nadvideo2.baidu.com
 +.nahg4lhbr.com
 +.nalook.com
++.nar17stuqf.com
 +.nasimobi.com
 +.native-log-collect.gryphline.com
 +.nativeapp.toutiao.com
@@ -5772,7 +5790,6 @@
 +.posthog.casinoplus.top
 +.posthog.casinoplus.top.eo.dnse3.com
 +.posthog.ikuai8.com
-+.postut.cn
 +.pow46ru6c.com
 +.pp-cdnfile1pcdn.msstatic.com
 +.pp2.pptv.com
@@ -5896,6 +5913,7 @@
 +.q6zikgclq9.com
 +.q7vnwa1ma7.com
 +.q8pmxabng9.com
++.q9cu7eok92.com
 +.q9ss0yqwa.com
 +.qa2bdtwm7h.com
 +.qab0m5irus.com
@@ -6016,7 +6034,6 @@
 +.r4uws5iu3g.com
 +.r5g13d8py3.com
 +.r5n8ic3on.com
-+.r6.mo.baidu.com
 +.r6yigjfvp.com
 +.r8ln4v4nef.com
 +.ra0mpyy93.com
@@ -6066,6 +6083,7 @@
 +.reo682syw4.com
 +.reorganizes64.com
 +.report-america.agora.io
++.report-america2.agora.io
 +.report-asia.agora.io
 +.report-edge.agora.io
 +.report-europe.agora.io
@@ -6107,7 +6125,6 @@
 +.resolver.mi.xiaomi.com
 +.resolver.msg.global.xiaomi.net
 +.resource.baomihua.com
-+.rest-argus-ad.agoralab.co
 +.resu8.hjfile.cn
 +.retcode-sg-lazada.arms.aliyuncs.com
 +.retcode.taobao.com
@@ -6191,6 +6208,7 @@
 +.rtlog3-applog-lq.amemv.com
 +.rtlog3-applog-lq.fqnovel.com
 +.rtlog3-applog-lq.toutiaoapi.com
++.rtlog3-applog.fqnovel.com
 +.rtlog5-applog-hl.fqnovel.com
 +.rtlog5-applog-lf.fqnovel.com
 +.rtlog5-applog-lq.fqnovel.com
@@ -6424,7 +6442,6 @@
 +.sentry.d.xiaomi.net
 +.sentry.deyecloud.com
 +.sentry.dhgate.com
-+.sentry.dreambig.work
 +.sentry.duozhuayu.net
 +.sentry.dvdfab.cn
 +.sentry.easycash.id
@@ -6620,6 +6637,7 @@
 +.somni.aussiespecialist.cn
 +.somni.australia.cn
 +.somni.mapac.thermofisher.cn
++.songlaoban.cn
 +.soob00avn4.com
 +.soorbka.cn
 +.sorituals.shop
@@ -6734,6 +6752,7 @@
 +.stat.xgo.com.cn
 +.stat.youpin.mi.com
 +.stat.zol.com.cn
++.stat2.pixpin.cn
 +.stat6.y.qq.com
 +.static-doubleclick-net.l.google.com
 +.static-s.iqiyi.com
@@ -6764,6 +6783,7 @@
 +.statistic.qzone.qq.com
 +.statistical-report.djiservice.org
 +.statistics.gd.gov.cn
++.statistics.one-all.cn
 +.statistics.qcc.com
 +.stats-api-we-01.tange365.com
 +.stats-sdk.tange365.com
@@ -6887,7 +6907,7 @@
 +.t7fv5mjt8i.com
 +.t7h2otlhd.com
 +.t7ywa5ai3.com
-+.t7z.cupid.ptqy.gitv.tv
++.t8yctltd8s.com
 +.t9x2gu6it3.com
 +.ta.pinduoduo.com
 +.ta.sanook.com
@@ -7509,7 +7529,6 @@
 +.v8fjvv9o3.com
 +.v8j1rkai1.com
 +.v9-reading-ad.qznovelvod.com
-+.v95-aw-reading-ad.qznovelvod.com
 +.v95-se-zjwztc-reading-ad.qznovelvod.com
 +.v95-ynkmtc-reading-ad.qznovelvod.com
 +.v95-zjjx2tc-reading-ad.qznovelvod.com
@@ -7767,7 +7786,6 @@
 +.wo30sg1orn.com
 +.wo6h5tx8w.com
 +.woniu.com
-+.woocall.sina.com.cn
 +.woodpecker.uc.cn
 +.worldwide.sogou.com
 +.wot.360.cn
@@ -7825,7 +7843,6 @@
 +.www.jmine.cn
 +.www.pasco.cc
 +.www.q4ee.top
-+.www.szrongt.com
 +.www.ttyyuuoo.com
 +.www.v61.com
 +.www.wowjs.1www.cn
@@ -8347,6 +8364,7 @@
 +.zyxyfy.com
 +.zyy25t69u.com
 +.zz.bdstatic.com
++.zzisnvb.cn
 +.zzrcz.com
 +.zztxr.cn
 +.zzz-log-upload-os.hoyoverse.com
