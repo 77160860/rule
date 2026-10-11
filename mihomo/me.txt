@@ -33,7 +33,6 @@
 +.cloudflareprod.com
 +.cloudflarestaging.com
 +.cloudflarestoragegw.com
-+.cmecloud.cn
 +.ctobsnssdk.com
 +.db-ip.com
 +.dytt-cinema.com
@@ -87,7 +86,6 @@
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
-+.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
@@ -104,5 +102,4 @@
 +.xy4k.com
 +.yinghuazy.xyz
 +.ymck.pro
-+.yykx.top
 +.yylx.win
