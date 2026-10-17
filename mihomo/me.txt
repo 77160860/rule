@@ -35,6 +35,7 @@
 +.cloudflarestoragegw.com
 +.ctobsnssdk.com
 +.db-ip.com
++.douyinbyte.com
 +.dytt-cinema.com
 +.dytt-film.com
 +.dytt-tvs.com
