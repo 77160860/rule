@@ -406,7 +406,6 @@
 +.4foutlets.shop
 +.4fshopes.shop
 +.4fshops.shop
-+.4fsportspl.shop
 +.4fstores.shop
 +.4grqz7x6z3.com
 +.4h87y9pc59.com
@@ -2188,7 +2187,6 @@
 +.config.cmpassport.com
 +.config1.cmpassport.com
 +.config2.cmpassport.com
-+.congenial-goggles-dpuw9y8aky56.edgeone.dev
 +.conn-service-gl-01.allawntech.com
 +.connect-dra.dbankcloud.cn
 +.connect-dra.map.dbankcloud.com
@@ -2865,7 +2863,6 @@
 +.experiment.pixverse.ai
 +.experiments.apple.com
 +.experiments.sparanoid.net
-+.explicit-amaranth-qng8tdbe.edgeone.dev
 +.exrwl.com
 +.ext.baidu.com
 +.extlog.snssdk.com
@@ -3139,7 +3136,6 @@
 +.geet3xanxc.com
 +.gef153x1u.com
 +.gefxhyby9.com
-+.gennewggffyjhsad.edgeone.dev
 +.gentian-frd.hjapi.com
 +.geo.go2s.co
 +.geofence.sys.miui.com
@@ -3498,7 +3494,6 @@
 +.honorsearch-drcn.hiboard.hihonorcloud.com
 +.honorsearch-dre.hiboard.hihonorcloud.com
 +.hopemobi.net
-+.horrible-coral-ugrwxhbj.edgeone.dev
 +.horze-pl.shop
 +.hotchat-im.iqiyi.com
 +.hotrk0.com
@@ -4707,7 +4702,6 @@
 +.meitustat.com
 +.meivoas.shop
 +.memelq.acs.org
-+.meobsogu.shop
 +.mepodownload.mediatek.com
 +.mercury.jd.com
 +.message.meitu.com
@@ -5472,7 +5466,6 @@
 +.playlog.youku.com
 +.playstats.v.duowan.com
 +.ploy.baofeng.net
-+.plrituals.shop
 +.plsec7wll8.com
 +.plugin.mobopay.baidu.com
 +.pmap.sandai.net
@@ -5870,7 +5863,6 @@
 +.richh.cn
 +.rio9s1zdpd.com
 +.ritualsbodys.shop
-+.ritualspl.shop
 +.river.zhidao.baidu.com
 +.rj.m.taobao.com
 +.rk2kpo4ef.com
@@ -6258,7 +6250,6 @@
 +.share.baidu.com
 +.shenshiads.com
 +.shilian168.cn
-+.shopxenial.shop
 +.show-msgch.qq.com
 +.show.ssports.com
 +.shqdown.ggzuhao.com
@@ -6995,7 +6986,6 @@
 +.txscn.cn
 +.ty.cn
 +.tyh.taobao.com
-+.tylerfoster.shop
 +.tz.sec.xiaomi.com
 +.tzifhmvuju.com
 +.tzp61mplc.com
@@ -7068,7 +7058,6 @@
 +.ugc.moji001.com
 +.ugcup.music.qq.com
 +.ugdtimg.com
-+.ugg-boshoes.myshoplaza.com
 +.uhabo.com
 +.uhiwh2tsu.com
 +.uhyqieok5u.com
