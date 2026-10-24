@@ -27,6 +27,7 @@ DOMAIN-SUFFIX,models.dev
 # emby
 DOMAIN-SUFFIX,bangumi.ca
 DOMAIN-SUFFIX,cf.sfcj.org
+DOMAIN-SUFFIX,media.emby.pro
 DOMAIN-SUFFIX,ciallo.party
 DOMAIN-SUFFIX,643793.xyz
 DOMAIN-SUFFIX,shrekmedia.org
