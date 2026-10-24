@@ -1,5 +1,6 @@
 +.10135.com
 +.2xiaopan.fun
++.643793.xyz
 +.67c6c7a.com
 +.95112475.xyz
 +.acgnya.com
@@ -18,6 +19,7 @@
 +.cf-ns.net
 +.cf-ns.site
 +.cf-ns.tech
++.cf.sfcj.org
 +.cftest5.cn
 +.cftest6.cn
 +.cftest7.com
@@ -76,7 +78,6 @@
 +.models.dev
 +.muou.asia
 +.muou.site
-+.newsntp.com
 +.nn.ci
 +.nyc.mn
 +.ottiptv.cc
