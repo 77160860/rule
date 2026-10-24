@@ -1,6 +1,5 @@
 +.10135.com
 +.2xiaopan.fun
-+.643793.xyz
 +.67c6c7a.com
 +.95112475.xyz
 +.acgnya.com
@@ -19,7 +18,6 @@
 +.cf-ns.net
 +.cf-ns.site
 +.cf-ns.tech
-+.cf.sfcj.org
 +.cftest5.cn
 +.cftest6.cn
 +.cftest7.com
@@ -60,7 +58,6 @@
 +.hbmysy.com
 +.heimuer.tv
 +.hkybqufgh.com
-+.huangmin.cc.cd
 +.hxx2023.cc
 +.hxx2027.cc
 +.istatmenus.app
@@ -71,7 +68,6 @@
 +.ln632.com
 +.macked.app
 +.macked.homes
-+.media.emby.pro
 +.mihdr.top
 +.miqk.cc
 +.mk1080.top
@@ -87,7 +83,6 @@
 +.rumt-zh.com
 +.ryiplay18.com
 +.shangchengtong.net
-+.shrekmedia.org
 +.snssdk.com
 +.tailscale.com
 +.tampermonkey.net
