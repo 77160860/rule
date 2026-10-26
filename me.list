@@ -28,6 +28,7 @@ DOMAIN-SUFFIX,models.dev
 # emby
 DOMAIN-SUFFIX,bangumi.ca
 DOMAIN-SUFFIX,ciallo.party
+DOMAIN-SUFFIX,tbag.dpdns.org
 # 影视仓
 DOMAIN-SUFFIX,ottiptv.cc
 DOMAIN-SUFFIX,wogg.net
