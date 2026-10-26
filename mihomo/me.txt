@@ -70,6 +70,7 @@
 +.snssdk.com
 +.tailscale.com
 +.tampermonkey.net
++.tbag.dpdns.org
 +.tbedu.top
 +.wogg.lol
 +.wogg.net
