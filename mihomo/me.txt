@@ -69,7 +69,6 @@
 +.ryiplay18.com
 +.shangchengtong.net
 +.snssdk.com
-+.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
 +.tbag.dpdns.org
