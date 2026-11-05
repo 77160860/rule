@@ -37,6 +37,7 @@
 +.earthol.com
 +.earthol.me
 +.enaturehome.com
++.feiwang.cc
 +.findjs.top
 +.ggtvb.cc
 +.gh-proxy.com
