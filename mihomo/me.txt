@@ -74,6 +74,7 @@
 +.tailscale.com
 +.tampermonkey.net
 +.tbag.dpdns.org
++.tbag.qzz.io
 +.tbedu.top
 +.wogg.lol
 +.wogg.net
