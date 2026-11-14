@@ -66,6 +66,7 @@
 +.nn.ci
 +.nyc.mn
 +.ottiptv.cc
++.palera.in
 +.riotgames.com
 +.rumt-zh.com
 +.ryiplay18.com
