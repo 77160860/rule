@@ -3,6 +3,7 @@
 +.acgnya.com
 +.akamaized.net
 +.aliapp.org
++.api.palera.in
 +.app.qingyingyong.net
 +.auete.top
 +.baidu-preferred.cc
@@ -60,13 +61,11 @@
 +.miqk.cc
 +.mk1080.top
 +.mmstat.com
-+.models.dev
 +.muou.asia
 +.muou.site
 +.nn.ci
 +.nyc.mn
 +.ottiptv.cc
-+.palera.in
 +.riotgames.com
 +.rumt-zh.com
 +.ryiplay18.com
