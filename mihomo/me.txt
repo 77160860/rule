@@ -50,7 +50,6 @@
 +.hxx2023.cc
 +.hxx2027.cc
 +.istatmenus.app
-+.jsdelivr.net
 +.kdns.fr
 +.libvio.mov
 +.lnh7.com
